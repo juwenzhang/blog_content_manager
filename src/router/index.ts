@@ -1,4 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  type NavigationGuardNext,
+  type RouteLocationNormalized
+} from 'vue-router'
+import { localCache } from '@/utils/settleCache.ts'
+import { TOKEN_KEY } from '@/constant'
 
 // 配置路由
 const router = createRouter({
@@ -27,6 +34,17 @@ const router = createRouter({
 })
 
 // 导航守卫
-
+router.beforeEach((
+  to:RouteLocationNormalized,
+  _:RouteLocationNormalized,
+  next:NavigationGuardNext
+): void => {
+  const token = localCache.getCache(TOKEN_KEY)
+  if (!token && to.name !== 'login') {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
+})
 
 export default router

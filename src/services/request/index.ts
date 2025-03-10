@@ -1,46 +1,89 @@
 import axios, { AxiosHeaders } from 'axios'
 import type {
   AxiosInstance,
-  AxiosRequestConfig,
   InternalAxiosRequestConfig,
-  AxiosResponse,
 } from "axios"
+import type { MyAxiosRequestConfig } from "@/types/AxiosType.ts"
 
-interface MyInterceptors<T> {
-  requestSuccessFn?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig
-  requestFailFn?: (err: any) => any
-  responseSuccessFn?: (res: T) => T
-  responseFailFn?: (err: any) => any
-}
-
-interface MyAxiosRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
-  interceptors?: MyInterceptors<T>
-}
-
+// 开始真真的封装吧
 export class MyAxiosRequest {
   private instance: AxiosInstance
 
   constructor(config: MyAxiosRequestConfig) {
     this.instance = axios.create(config)
 
+    // 全局请求拦截器
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         const headers: AxiosHeaders = new AxiosHeaders();
-        headers.set("Content-Type", "application/json;charset=UTF-8");
-        headers.set("Authorization", localStorage.getItem("token") || "");
-        headers.set("Accept", "application/json");
+        headers.set(
+          "Content-Type",
+          "application/json;charset=UTF-8"
+        );
+        headers.set(
+          "Authorization",
+          localStorage.getItem("token") || ""
+        );
+        headers.set(
+          "Accept",
+          "application/json"
+        );
         config.headers = headers;
         return config;
       },
-      err => {
+        err => {
         return Promise.reject(err);
       }
     );
 
+    // 全局响应拦截器
     this.instance.interceptors.response.use(res => {
       return res;
     }, err => {
-      return Promise.reject(err);
+      switch (err.response.status){
+        case 400:
+          return Promise.reject({
+            message: "400 Bad Request",
+            status: 400,
+            data: err.response.data,
+          });
+        case 401:
+          return Promise.reject({
+            message: "401 Unauthorized",
+            status: 401,
+            data: err.response.data,
+          });
+        case 403:
+          return Promise.reject({
+            message: "403 Forbidden",
+            status: 403,
+            data: err.response.data,
+          });
+        case 404:
+          return Promise.reject({
+            message: "404 Not Found",
+            status: 404,
+            data: err.response.data,
+          });
+        case 500:
+          return Promise.reject({
+            message: "500 Internal Server Error",
+            status: 500,
+            data: err.response.data,
+          });
+        case 502:
+          return Promise.reject({
+            message: "502 Bad Gateway",
+            status: 502,
+            data: err.response.data,
+          });
+        case 503:
+          return Promise.reject({
+            message: "503 Service Unavailable",
+            status: 503,
+            data: err.response.data,
+          });
+      }
     });
 
     if (config?.interceptors) {
@@ -55,9 +98,12 @@ export class MyAxiosRequest {
     }
   }
 
+  // 请求方法
   request<T = any>(config: MyAxiosRequestConfig) {
     if (config.interceptors?.requestSuccessFn) {
-      config = config.interceptors.requestSuccessFn(config as InternalAxiosRequestConfig) as MyAxiosRequestConfig;
+      config = config.interceptors.requestSuccessFn(
+        config as InternalAxiosRequestConfig
+      ) as MyAxiosRequestConfig;
     }
     return new Promise<T>((resolve, reject) => {
       this.instance.request<T>(config).then(res => {
@@ -70,8 +116,8 @@ export class MyAxiosRequest {
           err = config.interceptors.responseFailFn(err);
         }
         reject(err);
-      });
-    });
+      })
+    })
   }
 
   get<T = any>(config: MyAxiosRequestConfig) {

@@ -60,3 +60,23 @@
 * stylelint 配置
 * vite 配置
 * env.d.ts 别名模块配置
+
+### 区分 development 和 production 模式
+* 不同模式下的地址就有所不同
+  * 含有我们的测试环境的地址
+  * 含有我们的生产环境的地址
+  * 含有我们的开发环境的地址
+* 实现的思路有很多种的
+  * 一种就是我们的手动的注释操作来实现的判断是否是测试环境还是生产环境
+    * 但是这样的话就会过于依赖我们的手动操作，这个就是十分的麻烦
+  * 所以说我们需要使用我们的环境变量来判断
+    * 从而实现最终的自动化的操作吧
+* development 模式
+  * 就是我们的开发环境吧
+* production 模式
+  * 就是我们的生产环境吧
+* vite 中为我们提供的一些判断的环境有
+  * **import.meta.env.MODE** string 应用运行时的模式
+  * **import.meta.env.DEV** boolean 是否开发环境
+  * **import.meta.env.PROD** boolean 是否生产环境
+  * **import.meta.env.SSR** boolean 是否是服务端渲染的

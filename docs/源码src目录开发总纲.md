@@ -29,3 +29,11 @@
   * 插件
 * src/main.ts
   * 总文件配置
+
+## 了解 RBAC 设计模型
+* RBAC 设计模型
+  * R roles 角色
+  * A access 访问
+  * B based 基础
+  * C control 控制
+* 对于我们的一个后端来说这个模型是必须知晓以及知道的呐

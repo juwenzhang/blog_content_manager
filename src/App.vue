@@ -1,5 +1,7 @@
 <template>
-  <RouterView />
+  <div class="blog-content-manager-app">
+    <RouterView />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -7,5 +9,8 @@
 </script>
 
 <style scoped lang="less">
-
+  .blog-content-manager-app {
+    width: 100vw;
+    height: 100vh;
+  }
 </style>
