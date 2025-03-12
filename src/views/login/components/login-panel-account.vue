@@ -35,7 +35,7 @@
 <script setup lang="ts">
   import { reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { loginStoreAction } from '@/stores/modules/login.ts'
+  import { useLoginStoreAction } from '@/stores/modules/login.ts'
   import { AccountRules } from '@/validation/Login.ts'
   import { faker } from '@faker-js/faker'
   import { ElForm } from 'element-plus'
@@ -46,11 +46,11 @@
   type ElFormInstance = InstanceType<typeof ElForm>
 
   const router:ReturnType<typeof useRouter> = useRouter()
-  const loginStore:ReturnType<typeof loginStoreAction> = loginStoreAction()
+  const useLoginStore:ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
   const account:ReturnType<typeof ref> = ref<ElFormInstance | null>(null)
   let accountInfo:ReturnType<typeof reactive<LoginAccount>> = reactive<LoginAccount>({
-    username: loginStore.username || '',
-    password: loginStore.password || ''
+    username: useLoginStore.username || '',
+    password: useLoginStore.password || ''
   })
 
   function LoginHandleAccountAction(isRemPWD: boolean): void {
@@ -58,22 +58,41 @@
     if (localCache.getCache(TOKEN_KEY)) {
       localCache.removeCache(TOKEN_KEY)
     }
-    if (accountInfo.password === loginConfigCode.password
-      && accountInfo.username === loginConfigCode.username) {
-      if (isRemPWD) {
-        loginStore.setUsername(accountInfo.username)
-        loginStore.setPassword(accountInfo.password)
-        accountInfo = {
-          username: loginStore.username,
-          password: loginStore.password
+    if (accountInfo.password !== "" && accountInfo.username !== "") {
+      if (accountInfo.password === loginConfigCode.password
+        && accountInfo.username === loginConfigCode.username) {
+        if (isRemPWD) {
+          useLoginStore.setUsername(accountInfo.username)
+          useLoginStore.setPassword(accountInfo.password)
+          accountInfo = {
+            username: useLoginStore.username,
+            password: useLoginStore.password
+          }
+        } else {
+          useLoginStore.setClearAll()
         }
+        useLoginStore.accessId = 0
+        localCache.removeCache("accessId")
+        localCache.setCache<string>("accessId", useLoginStore.accessId)
       } else {
-        loginStore.setClearAll()
+        if (isRemPWD) {
+          useLoginStore.setUsername(accountInfo.username)
+          useLoginStore.setPassword(accountInfo.password)
+          accountInfo = {
+            username: useLoginStore.username,
+            password: useLoginStore.password
+          }
+        } else {
+          useLoginStore.setClearAll()
+        }
+        useLoginStore.accessId = 1
+        localCache.removeCache("accessId")
+        localCache.setCache<string>("accessId", useLoginStore.accessId)
       }
       localCache.setCache<string>(TOKEN_KEY, faker.string.uuid().replaceAll("-", ""))
       router.push('/home')
     } else {
-      console.log("账号或者密码不正确")
+      window.alert("请输入账号和密码")
     }
   }
 

@@ -6,7 +6,7 @@ import type {
 import type { MyAxiosRequestConfig } from "@/types/AxiosType.ts"
 
 // 开始真真的封装吧
-export class MyAxiosRequest {
+class MyAxiosRequest {
   private instance: AxiosInstance
 
   constructor(config: MyAxiosRequestConfig) {
@@ -140,3 +140,5 @@ export class MyAxiosRequest {
     return this.request<T>({ ...config, method: "options" });
   }
 }
+
+export default MyAxiosRequest;

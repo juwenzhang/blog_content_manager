@@ -32,7 +32,7 @@
 <script setup lang="ts">
   import { reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { loginStoreAction } from '@/stores/modules/login.ts'
+  import { useLoginStoreAction } from '@/stores/modules/login.ts'
   import { faker } from '@faker-js/faker'
   import { phoneRules } from '@/validation/Login.ts'
   import { localCache } from '@/utils/settleCache.ts'
@@ -42,11 +42,11 @@
 
   type ElFormInstance = InstanceType<typeof ElForm>
 
-  const loginStore:ReturnType<typeof loginStoreAction> = loginStoreAction()
+  const useLoginStore:ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
   const router:ReturnType<typeof useRouter> = useRouter()
   const phoneForm:ReturnType<typeof ref<ElFormInstance | null>> = ref<ElFormInstance | null>(null)
   const phoneInfo:ReturnType<typeof reactive<LoginConfigCode>> = reactive<LoginConfigCode>({
-    phone: loginStore.phone || '',
+    phone: useLoginStore.phone || '',
     code: ''
   })
 
@@ -55,17 +55,32 @@
     if (localCache.getCache(TOKEN_KEY)) {
       localCache.removeCache(TOKEN_KEY)
     }
-    if (phoneInfo.phone === loginConfigPhone.phone) {
-      if (isRemPWD) {
-        loginStore.setPhone(phoneInfo.phone)
-        phoneInfo.phone = loginStore.phone
+    if (phoneInfo.phone !== "" && phoneInfo.code !== "") {
+      if (phoneInfo.phone === loginConfigPhone.phone) {
+        if (isRemPWD) {
+          useLoginStore.setPhone(phoneInfo.phone)
+          phoneInfo.phone = useLoginStore.phone
+        } else {
+          useLoginStore.setClearAll()
+        }
+        useLoginStore.accessId = 0
+        localCache.removeCache("accessId")
+        localCache.setCache<LoginConfigCode>("accessId", useLoginStore.accessId)
       } else {
-        loginStore.setClearAll()
+        if (isRemPWD) {
+          useLoginStore.setPhone(phoneInfo.phone)
+          phoneInfo.phone = useLoginStore.phone
+        } else {
+          useLoginStore.setClearAll()
+        }
+        useLoginStore.accessId = 1
+        localCache.removeCache("accessId")
+        localCache.setCache<LoginConfigCode>("accessId", useLoginStore.accessId)
       }
       localCache.setCache<string>(TOKEN_KEY, faker.string.uuid().replaceAll("-", ""))
       router.push('/home')
     } else {
-      console.log("账号或者验证码不正确")
+      window.alert("请输入手机号和验证码")
     }
   }
 

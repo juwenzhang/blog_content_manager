@@ -29,6 +29,10 @@ class SettleCache {
     this.storage.removeItem(key)
   }
 
+  hasCache(key:string): boolean {
+    return this.storage.getItem(key) !== null
+  }
+
   clearCache(): void {
     this.storage.clear()
   }

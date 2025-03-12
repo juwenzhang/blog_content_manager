@@ -1,22 +1,32 @@
 // 开始实现创建我们的 login 的store
 import { defineStore, type StoreDefinition } from 'pinia'
+import { useRouter } from 'vue-router'
+import { userListRequest } from "@/services/index.ts"
+import { localCache } from '@/utils/settleCache.ts'
+import { TOKEN_KEY } from '@/constant'
+import type { RouteType } from '@/types/RouteType.ts'
+import type { LoginAccount } from '@/types/loginType.ts'
 
-interface storeType  {
-  username: string;
-  password: string;
-  phone: string;
-  type: string;
+interface loginStoreType{
+  username: string
+  password: string
+  phone: string
+  type: string
   isRemPWD: boolean
+  accessId: number,
+  MenuData: Record<string, {name:string, url:string}>[]
 }
 
-const loginStore: StoreDefinition = defineStore('login', {
-  state: ():Partial<storeType>  => {
+const useLoginStore: StoreDefinition = defineStore('login', {
+  state: ():Partial<loginStoreType>  => {
     return {
       username: "",
       password: "",
       phone: "",
       type: "account",
-      isRemPWD: false
+      isRemPWD: false,
+      accessId: localCache.getCache("accessId") || 0,
+      MenuData: localCache.getCache("MenuData") || [] as Record<string, {name:string, url:string}>[],
     }
   },
 
@@ -42,6 +52,45 @@ const loginStore: StoreDefinition = defineStore('login', {
       this.phone = ""
       this.type = "account"
       this.isRemPWD = false
+      this.accessId = localCache.getCache("accessId") || 0
+      localCache.removeCache("MenuData")
+      this.MenuData = []
+    },
+    setMenuData(MenuData: Record<string,{name:string, url:string}>[]) {
+      const router:ReturnType<typeof useRouter> = useRouter()
+      const dynamicRoutes:RouteType[] = []
+      const files:Record<string, any> = import.meta.glob('@/router/*/*/*.ts', { eager: true })
+      for(const key in files) {
+        const module = files[key]
+        dynamicRoutes.push(module.default)
+      }
+      for(const key in MenuData) {
+        for(const index in MenuData[key]) {
+          const route = dynamicRoutes.find(item => item.path === MenuData[key][index].url)
+          if (route) {
+            router.addRoute('home', route)
+          }
+        }
+      }
+      if (localCache.hasCache("MenuData")) {
+        localCache.removeCache("MenuData")
+      }
+      localCache.setCache("MenuData", MenuData)
+      this.MenuData = MenuData as Record<string, {name:string, url:string}>[]
+    },
+    async loginAccountAction(account: LoginAccount) {
+      try {
+        const loginResult = await userListRequest.accountLoginRequest(account)
+        this.accessId = loginResult.id
+        this.username = loginResult.name
+        localCache.setCache(TOKEN_KEY, loginResult.token)
+      } catch (error) {
+        if (this.username === "juwenzhang") {
+          this.accessId = 0
+        } else {
+          this.accessId = 1
+        }
+      }
     }
   },
 
@@ -60,10 +109,16 @@ const loginStore: StoreDefinition = defineStore('login', {
     },
     getIsRemPWD(): boolean {
       return <boolean>this.isRemPWD
+    },
+    getAccessId(): number {
+      return <number>this.accessId
+    },
+    getMenuData(): Record<string, {name:string, url:string}>[] {
+      return <Record<string, {name:string, url:string}>[]>this.MenuData
     }
   }
 })
 
-export const loginStoreAction = () => {
-  return loginStore()
+export const useLoginStoreAction = ():ReturnType<typeof useLoginStore> => {
+  return useLoginStore()
 }

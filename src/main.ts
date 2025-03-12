@@ -5,11 +5,11 @@ import App from '@/App.vue'
 import router from '@/router'
 import pinia from '@/stores'
 import RegisterIcons from '@/shared/register_icons.ts'
-import { SaveLoginInitLocalData } from '@/shared/login_info.ts'
+import { initData } from '@/shared/init.ts'
 
 const app:ReturnType<typeof createApp> = createApp(App)
 
-SaveLoginInitLocalData()
+initData()
 // 实现全局注册图标
 app.use(RegisterIcons)
 app.use(router)

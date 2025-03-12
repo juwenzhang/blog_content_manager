@@ -78,7 +78,7 @@
 
 <script setup lang="ts">
   import { ref, watch, onMounted } from 'vue'
-  import { loginStoreAction } from '@/stores/modules/login.ts'
+  import { useLoginStoreAction } from '@/stores/modules/login.ts'
   import { login_message_data } from '@/assets/data/loginData.ts'
   import { ElButton } from 'element-plus'
   import LoginPanelAccount from '@/views/login/components/login-panel-account.vue'
@@ -88,16 +88,15 @@
   type LoginPanelPhoneInstance = InstanceType<typeof LoginPanelPhone>
   type ElButtonInstance = InstanceType<typeof ElButton>
 
-  const loginStore:ReturnType<typeof loginStoreAction> = loginStoreAction()
-  const isRemPWD:ReturnType<typeof ref<boolean>> = ref<boolean>(loginStore.isRemPWD || false)
-  const activeName:ReturnType<typeof ref<string>> = ref<string>(loginStore.type || 'account')
+  const useLoginStore:ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
+  const isRemPWD:ReturnType<typeof ref<boolean>> = ref<boolean>(useLoginStore.isRemPWD || false)
+  const activeName:ReturnType<typeof ref<string>> = ref<string>(useLoginStore.type || 'account')
   const accountRef:ReturnType<typeof ref<LoginPanelAccountInstance | any>> = ref<LoginPanelAccountInstance | any>()
   const phoneRef:ReturnType<typeof ref<LoginPanelPhoneInstance | any>> = ref<LoginPanelPhoneInstance | any>()
   const buttonRef:ReturnType<typeof ref<ElButtonInstance | any>> = ref<ElButtonInstance>()
 
   const LoginHandleSelect:ReturnType<typeof ref<() => void>> = ref<() => void>()
   onMounted(() => {
-    console.log(activeName.value, isRemPWD.value)
     LoginHandleSelect.value = () => {
       switch (activeName.value) {
         case 'account':
@@ -110,10 +109,10 @@
     }
   })
   watch(isRemPWD, (newValue) => {
-    loginStore.setIsRemPWD(newValue)
+    useLoginStore.setIsRemPWD(newValue)
   })
   watch(activeName, (newValue) => {
-    loginStore.setType(newValue)
+    useLoginStore.setType(newValue)
   })
 </script>
 

@@ -1,28 +1,81 @@
 <template>
   <div class="blog-content-manager-home">
-    <button
-      @click="layoutHandle"
-    >
-      {{
-        homeData?.layout
-      }}
-    </button>
+    <div class="common-layout">
+      <el-container class="main-container">
+        <el-aside :width="isCollapse ? '60px' : '210px'" class="aside-container">
+          <MainNavMenu :isCollapse="Boolean(isCollapse)"/>
+        </el-aside>
+        <el-container class="extra-container">
+          <el-header class="extra-header" height="50px">
+            <MainHeader @mainHeaderIconClick="handleFoldEvent"/>
+          </el-header>
+          <el-main class="extra-main">
+            <MainContainer/>
+          </el-main>
+        </el-container>
+      </el-container>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts" name="home">
-  import { homeData } from '@/assets/data/homeData.ts'
+import { onMounted, ref, watch } from 'vue'
+  import MainNavMenu from '@/components/main-nav-menu.vue'
+  import MainHeader from '@/components/main-header.vue'
+  import MainContainer from '@/components/main-container.vue'
+  import { useHomeStoreAction } from '@/stores/modules/home.ts'
   import { localCache } from '@/utils/settleCache.ts'
-  import { TOKEN_KEY } from '@/constant'
-  import { useRouter } from 'vue-router'
 
-  const router:ReturnType<typeof useRouter> = useRouter()
-  const layoutHandle = () => {
-    localCache.removeCache(TOKEN_KEY)
-    router.push(homeData?.redirect as string)
+  const useHomeStore: ReturnType<typeof useHomeStoreAction> = useHomeStoreAction()
+  const isCollapse:ReturnType<typeof ref<boolean>> = ref<boolean>(
+    useHomeStore.getIsCollapse || false)
+  const handleFoldEvent = (isFold:boolean) => {
+    isCollapse.value = isFold
   }
+  onMounted(() => {
+    watch(isCollapse, (newValue) => {
+      localCache.removeCache('isCollapse')
+      localCache.setCache('isCollapse', JSON.stringify(newValue))
+      useHomeStore.setIsCollapse(newValue)
+    })
+  })
 </script>
 
 <style scoped lang="less">
+  .blog-content-manager-home {
 
+    .common-layout {
+      height: 100vh;
+
+      .main-container{
+        height: 100%;
+        .aside-container {
+          max-width: 250px;
+          overflow-x: hidden;
+          overflow-y: auto;
+          line-height: 200px;
+          text-align: center;
+          cursor: pointer;
+          background-color: #001529;
+          transition: width .3s linear;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        }
+
+        .extra-container{
+          .extra-header{
+            background-color: #f5f0f1;
+          }
+
+          .extra-main {
+            background-color: #f0f2f5;
+          }
+        }
+      }
+    }
+  }
 </style>

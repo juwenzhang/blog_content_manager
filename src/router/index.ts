@@ -24,7 +24,7 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
-      component: () => import('@/views/home/home.vue')
+      component: () => import('@/views/home/home.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
@@ -41,6 +41,8 @@ router.beforeEach((
 ): void => {
   const token = localCache.getCache(TOKEN_KEY)
   if (!token && to.name !== 'login') {
+    // other page
+
     next({ name: 'login' })
   } else {
     next()
