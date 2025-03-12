@@ -10,6 +10,7 @@ import Icons from 'unplugin-icons/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: './',
   plugins: [
     // 实现的是按需导入
     AutoImport({
