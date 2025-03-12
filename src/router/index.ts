@@ -9,7 +9,7 @@ import { TOKEN_KEY } from '@/constant'
 
 // 配置路由
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/blog_content_manager/'),
   routes: [
     {
       path: '/',
