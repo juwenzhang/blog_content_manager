@@ -27,6 +27,7 @@
     "@faker-js/faker": "^9.5.0",
     "axios": "^1.7.9",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
     "element-plus": "^2.9.5",
     "normalize.css": "^8.0.1",
     "pinia": "^3.0.1",

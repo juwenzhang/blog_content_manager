@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts" name="MainNavMenu">
-import { ref, computed, type Component } from 'vue'
+  import { ref, computed, type Component, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { Monitor, ChatDotRound, Setting, ShoppingBag } from '@element-plus/icons-vue'
   import { useHomeStoreAction } from "@/stores/modules/home.ts"
@@ -64,7 +64,6 @@ import { ref, computed, type Component } from 'vue'
   const homeMenuData = useLoginStore.getAccessId === 0
     ? useHomeStore.getAdminHomeData
     : useHomeStore.getUserHomeData
-  useLoginStore.setMenuData(homeMenuData)
   const subMenuClickHandler = (index:number, sub_index:number, url:string) => {
     currentIndex.value = { index, subIndex: sub_index }
     router.push(url)
@@ -72,6 +71,9 @@ import { ref, computed, type Component } from 'vue'
   const menuLogoClickHandler = () => {
     router.push('/login')
   }
+  onMounted(() => {
+    useLoginStore.setMenuData(homeMenuData)
+  })
 </script>
 
 <style scoped lang="less">

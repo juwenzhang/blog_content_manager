@@ -18,6 +18,7 @@ type AddReturnType = ReturnType<typeof add>; // AddReturnType 的类型为 numbe
   * InstanceType<T>
   * 是我们的 typescript 中的一个内置的类型检查工具，用于实现的是获取我们的一个构造函数的实例类型
   * 它接受一个泛型参数 T，该参数必须是一个构造函数类型，并返回该构造函数的实例类型
+  * 在组件化开发中可以用来实现的是获取一个组件实例吧
 ```typescript
 type InstanceType<T extends abstract new (...args: any) => any> 
   = T extends abstract new (...args: any) => infer R ? R : any;

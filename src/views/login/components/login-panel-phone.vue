@@ -5,7 +5,8 @@
       :model="phoneInfo"
       :rules="phoneRules"
       ref="phoneForm"
-    status-icon
+      status-icon
+      label-width="70px"
     >
     <el-form-item
       label="手机号"
@@ -37,7 +38,7 @@
   import { phoneRules } from '@/validation/Login.ts'
   import { localCache } from '@/utils/settleCache.ts'
   import { TOKEN_KEY } from "@/constant/index.ts"
-  import type { ElForm } from 'element-plus'
+  import { type ElForm } from 'element-plus'
   import type { LoginConfigCode } from '@/types/loginType.ts'
 
   type ElFormInstance = InstanceType<typeof ElForm>

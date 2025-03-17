@@ -59,6 +59,7 @@ const useLoginStore: StoreDefinition = defineStore('login', {
     setMenuData(MenuData: Record<string,{name:string, url:string}>[]) {
       const router:ReturnType<typeof useRouter> = useRouter()
       const dynamicRoutes:RouteType[] = []
+      const localRoutes:RouteType[] = []
       const files:Record<string, any> = import.meta.glob('@/router/*/*/*.ts', { eager: true })
       for(const key in files) {
         const module = files[key]
@@ -67,14 +68,22 @@ const useLoginStore: StoreDefinition = defineStore('login', {
       for(const key in MenuData) {
         for(const index in MenuData[key]) {
           const route = dynamicRoutes.find(item => item.path === MenuData[key][index].url)
+          if(router.hasRoute(route?.name as string)) {
+            router.removeRoute(route?.name as string)
+          }
           if (route) {
             router.addRoute('home', route)
+            localRoutes.push(route as RouteType)
           }
         }
+      }
+      if (localCache.hasCache("localRoutes")) {
+        localCache.removeCache("localRoutes")
       }
       if (localCache.hasCache("MenuData")) {
         localCache.removeCache("MenuData")
       }
+      localCache.setCache("localRoutes", localRoutes)
       localCache.setCache("MenuData", MenuData)
       this.MenuData = MenuData as Record<string, {name:string, url:string}>[]
     },

@@ -9,7 +9,7 @@ import { TOKEN_KEY } from '@/constant'
 
 // 配置路由
 const router = createRouter({
-  history: createWebHistory('/blog_content_manager/'),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     {
       path: '/',
@@ -42,7 +42,6 @@ router.beforeEach((
   const token = localCache.getCache(TOKEN_KEY)
   if (!token && to.name !== 'login') {
     // other page
-
     next({ name: 'login' })
   } else {
     next()

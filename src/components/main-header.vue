@@ -8,7 +8,7 @@
 
     <div class="main-header-content">
       <div class="main-header-content-breadcrumb">
-        面包屑
+        <MainCrumb/>
       </div>
       <div class="main-header-content-info">
         <MainHeaderInfo/>
@@ -22,6 +22,7 @@
   import { useHomeStoreAction } from '@/stores/modules/home.ts'
   import { Expand, Fold } from '@element-plus/icons-vue'
   import MainHeaderInfo from '@/components/main-header-info.vue'
+  import MainCrumb from '@/components/main-crumb.vue'
 
   const useHomeStore:ReturnType<typeof useHomeStoreAction> = useHomeStoreAction()
   const isFold:ReturnType<typeof ref<boolean>> = ref<boolean>(
@@ -52,6 +53,7 @@
       justify-content: space-between;
       flex: 1;
       padding: 0 18px;
+      align-items: center;
     }
   }
 </style>

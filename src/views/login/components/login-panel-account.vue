@@ -6,6 +6,7 @@
       :rules="AccountRules"
       ref="account"
       status-icon
+      label-width="60px"
     >
       <el-form-item
         label="账户"
@@ -38,7 +39,7 @@
   import { useLoginStoreAction } from '@/stores/modules/login.ts'
   import { AccountRules } from '@/validation/Login.ts'
   import { faker } from '@faker-js/faker'
-  import { ElForm } from 'element-plus'
+  import { type ElForm } from 'element-plus'
   import { localCache } from '@/utils/settleCache.ts'
   import { TOKEN_KEY } from "@/constant/index.ts"
   import type { LoginAccount } from '@/types/loginType.ts'

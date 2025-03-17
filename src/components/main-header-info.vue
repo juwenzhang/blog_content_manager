@@ -57,10 +57,11 @@
     const files = import.meta.glob('@/router/*/*/*.ts', { eager: true })
     for(const key in files) {
       const module = files[key] as { default: RouteType }
-      if (router.hasRoute(module.default.path as string)) {
-        router.removeRoute(module.default.path as string)
+      if (router.hasRoute(module.default.name as string)) {
+        router.removeRoute(module.default.name as string)
       }
     }
+    localCache.removeCache('localRoutes')
     router.push('/login')
   }
 </script>
