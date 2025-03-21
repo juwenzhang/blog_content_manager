@@ -5,10 +5,10 @@ enum CacheType {
 
 class SettleCache {
   private storage:Storage
-  constructor<T>(type:CacheType):T | void {
+  constructor(type:CacheType) {
      this.storage = type === CacheType.localStorage ? localStorage : sessionStorage
   }
-  setCache<T>(key:string, value:T): T | void {
+  setCache<T>(key:string, value:T): void {
     if (value) {
       this.storage.setItem(key, JSON.stringify(value))
     }
@@ -25,15 +25,15 @@ class SettleCache {
     }
   }
 
-  removeCache<T>(key:string):T | void {
+  removeCache(key:string): void {
     this.storage.removeItem(key)
   }
 
-  hasCache<T>(key:string):T | boolean {
+  hasCache(key:string): boolean {
     return this.storage.getItem(key) !== null
   }
 
-  clearCache<T>():T | void {
+  clearCache(): void {
     this.storage.clear()
   }
 }
