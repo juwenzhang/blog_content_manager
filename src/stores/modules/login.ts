@@ -6,6 +6,7 @@ import { localCache } from '@/utils/settleCache.ts'
 import { TOKEN_KEY } from '@/constant'
 import type { RouteType } from '@/types/RouteType.ts'
 import type { LoginAccount } from '@/types/loginType.ts'
+import { mapLocalRoutesToRouter } from '@/utils/map_routes.ts'
 
 interface loginStoreType{
   username: string
@@ -31,22 +32,22 @@ const useLoginStore: StoreDefinition = defineStore('login', {
   },
 
   actions: {
-    setUsername(username: string) {
+    setUsername<T>(username: string): T | void {
       this.username = username
     },
-    setPassword(password: string) {
+    setPassword<T>(password: string): T | void {
       this.password = password
     },
-    setPhone(phone: string) {
+    setPhone<T>(phone: string): T | void {
       this.phone = phone
     },
-    setType(type: string) {
+    setType<T>(type: string): T | void {
       this.type = type
     },
-    setIsRemPWD(isRemPWD: boolean) {
+    setIsRemPWD<T>(isRemPWD: boolean): T | void {
       this.isRemPWD = isRemPWD
     },
-    setClearAll() {
+    setClearAll<T>(): T | void {
       this.username = ""
       this.password = ""
       this.phone = ""
@@ -56,7 +57,7 @@ const useLoginStore: StoreDefinition = defineStore('login', {
       localCache.removeCache("MenuData")
       this.MenuData = []
     },
-    setMenuData(MenuData: Record<string,{name:string, url:string}>[]) {
+    setMenuData<T>(MenuData: Record<string,{name:string, url:string}>[]): T | void {
       const router:ReturnType<typeof useRouter> = useRouter()
       const dynamicRoutes:RouteType[] = []
       const localRoutes:RouteType[] = []
@@ -87,12 +88,19 @@ const useLoginStore: StoreDefinition = defineStore('login', {
       localCache.setCache("MenuData", MenuData)
       this.MenuData = MenuData as Record<string, {name:string, url:string}>[]
     },
+    setLocalRoutes<T>(router: ReturnType<typeof useRouter>): T | void {
+      if (!localCache.hasCache("localRoutes")) {
+        return
+      }
+      const localRoutes:RouteType[] = localCache.getCache("localRoutes") as RouteType[]
+      mapLocalRoutesToRouter(localRoutes, router)
+    },
     async loginAccountAction(account: LoginAccount) {
       try {
         const loginResult = await userListRequest.accountLoginRequest(account)
-        this.accessId = loginResult.id
-        this.username = loginResult.name
-        localCache.setCache(TOKEN_KEY, loginResult.token)
+        this.accessId = loginResult?.id
+        this.username = loginResult?.name
+        localCache.setCache(TOKEN_KEY, loginResult?.token)
       } catch (error) {
         if (this.username === "juwenzhang") {
           this.accessId = 0
@@ -104,30 +112,30 @@ const useLoginStore: StoreDefinition = defineStore('login', {
   },
 
   getters: {
-    getUsername(): string {
-      return <string>this.username
+    getUsername<T>():T | string {
+      return <T | string>this.username
     },
-    getPassword(): string {
-      return <string>this.password
+    getPassword<T>():T | string {
+      return <T | string>this.password
     },
-    getPhone(): string {
-      return <string>this.phone
+    getPhone<T>():T | string {
+      return <T | string>this.phone
     },
-    getType(): string {
-      return <string>this.type
+    getType<T>():T | string {
+      return <T | string>this.type
     },
-    getIsRemPWD(): boolean {
-      return <boolean>this.isRemPWD
+    getIsRemPWD<T>():T | boolean {
+      return <T | boolean>this.isRemPWD
     },
-    getAccessId(): number {
-      return <number>this.accessId
+    getAccessId<T>():T | number {
+      return <T | number>this.accessId
     },
-    getMenuData(): Record<string, {name:string, url:string}>[] {
-      return <Record<string, {name:string, url:string}>[]>this.MenuData
+    getMenuData<T>():T | Record<string, {name:string, url:string}>[] {
+      return <T | Record<string, {name:string, url:string}>[]>this.MenuData
     }
   }
 })
 
-export const useLoginStoreAction = ():ReturnType<typeof useLoginStore> => {
-  return useLoginStore()
+export const useLoginStoreAction = (pinia: any):ReturnType<typeof useLoginStore> => {
+  return useLoginStore(pinia)
 }

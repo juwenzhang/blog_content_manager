@@ -29,10 +29,11 @@ import { onMounted, ref, watch } from 'vue'
   const useHomeStore: ReturnType<typeof useHomeStoreAction> = useHomeStoreAction()
   const isCollapse:ReturnType<typeof ref<boolean>> = ref<boolean>(
     useHomeStore.getIsCollapse || false)
-  const handleFoldEvent = (isFold:boolean) => {
+
+  const handleFoldEvent = <T>(isFold:boolean):T | void => {
     isCollapse.value = isFold
   }
-  onMounted(() => {
+  onMounted(<T>():T | void => {
     watch(isCollapse, (newValue) => {
       localCache.removeCache('isCollapse')
       localCache.setCache('isCollapse', JSON.stringify(newValue))

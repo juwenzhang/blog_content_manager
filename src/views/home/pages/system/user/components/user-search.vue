@@ -107,8 +107,8 @@
     status: '启用',
     date: ''
   })
-  const emit: (event: 'queryClick', ...args: any[]) => void = defineEmits(['queryClick'])
-  const RefreshClickHandle = () => {
+  const emit: ReturnType<typeof defineEmits> = defineEmits(['queryClick', 'resetClick'])
+  const RefreshClickHandle:<T>() => T | void = <T>(): T | void => {
     if (formRef.value) {
       /**
        * need attach prop on el-form-item
@@ -122,12 +122,17 @@
        * searchForm.date = ''
        */
       formRef.value?.resetFields()  // reset form fields
+      emit('resetClick')
     }
   }
 
-  const SearchClickHandle = () => {
+  const SearchClickHandle:<T>() => T | void = <T>(): T | void => {
     emit('queryClick', searchForm)
   }
+
+  defineExpose({
+    searchForm
+  })
 </script>
 
 <style scoped lang="less">

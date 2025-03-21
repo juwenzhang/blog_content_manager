@@ -96,7 +96,7 @@
   const buttonRef:ReturnType<typeof ref<ElButtonInstance | any>> = ref<ElButtonInstance>()
 
   const LoginHandleSelect:ReturnType<typeof ref<() => void>> = ref<() => void>()
-  onMounted(() => {
+  onMounted(<T>():T | void => {
     LoginHandleSelect.value = () => {
       switch (activeName.value) {
         case 'account':

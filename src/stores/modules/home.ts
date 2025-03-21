@@ -23,23 +23,23 @@ const useHomeStore:StoreDefinition = defineStore('home', {
   },
 
   getters: {
-    getAdminHomeData(state: homeStateType): Record<string, Record<string, Array<{name:string, url:string}>>>
-      | Record<string, []> {
-      return <Record<string, Record<string, Array<{name:string, url:string}>>>
+    getAdminHomeData<T>(state: homeStateType): Record<string, Record<string, Array<{name:string, url:string}>>>
+      | Record<string, []> | T{
+      return <T | Record<string, Record<string, Array<{name:string, url:string}>>>
         | Record<string, []>>state.adminHomeData
     },
-    getUserHomeData(state: homeStateType): Record<string, Record<string, Array<{name:string, url:string}>>>
-      | Record<string, []> {
-      return <Record<string, Record<string, Array<{name:string, url:string}>>>
+    getUserHomeData<T>(state: homeStateType): Record<string, Record<string, Array<{name:string, url:string}>>>
+      | Record<string, []> | T {
+      return <T | Record<string, Record<string, Array<{name:string, url:string}>>>
         | Record<string, []>>state.userHomeData
     },
-    getIsCollapse(state: homeStateType): boolean {
-      return <boolean>state.isCollapse
+    getIsCollapse<T>(state: homeStateType): boolean | T {
+      return <T | boolean>state.isCollapse
     },
   },
 
   actions: {
-    setHomeData(data: homeStateType):void {
+    setHomeData<T>(data: homeStateType):T | void {
       this.adminHomeData = data.adminHomeData as Record<string, Record<string, Array<{name:string, url:string}>>>
         | Record<string, []>
       this.userHomeData = data.userHomeData as Record<string, Record<string, Array<{name:string, url:string}>>>
@@ -47,7 +47,7 @@ const useHomeStore:StoreDefinition = defineStore('home', {
       localCache.setCache(ADMIN_HOME_DATA, data.adminHomeData)
       localCache.setCache(USER_HOME_DATA, data.userHomeData)
     },
-    setIsCollapse(data: boolean):void {
+    setIsCollapse<T>(data: boolean):T | void {
       this.isCollapse = data
       localCache.setCache("isCollapse", JSON.stringify(data))
     }

@@ -64,14 +64,14 @@
   const homeMenuData = useLoginStore.getAccessId === 0
     ? useHomeStore.getAdminHomeData
     : useHomeStore.getUserHomeData
-  const subMenuClickHandler = (index:number, sub_index:number, url:string) => {
+  const subMenuClickHandler = <T>(index:number, sub_index:number, url:string):T | void => {
     currentIndex.value = { index, subIndex: sub_index }
     router.push(url)
   }
-  const menuLogoClickHandler = () => {
+  const menuLogoClickHandler = <T>():T | void => {
     router.push('/login')
   }
-  onMounted(() => {
+  onMounted(<T>():T | void => {
     useLoginStore.setMenuData(homeMenuData)
   })
 </script>

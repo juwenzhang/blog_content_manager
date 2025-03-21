@@ -19,7 +19,7 @@
   const errorAction: string = '返回首页Home'
   const router:Router = useRouter()
 
-  function BackHome(): void {
+  function BackHome<T>():T | void {
     router.push('/home')
   }
 </script>

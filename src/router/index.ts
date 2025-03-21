@@ -2,13 +2,13 @@ import {
   createRouter,
   createWebHistory,
   type NavigationGuardNext,
-  type RouteLocationNormalized
+  type RouteLocationNormalized, useRouter
 } from 'vue-router'
 import { localCache } from '@/utils/settleCache.ts'
 import { TOKEN_KEY } from '@/constant'
 
 // 配置路由
-const router = createRouter({
+const router: ReturnType<typeof createRouter> = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     {
@@ -34,11 +34,11 @@ const router = createRouter({
 })
 
 // 导航守卫
-router.beforeEach((
+router.beforeEach(<T>(
   to:RouteLocationNormalized,
   _:RouteLocationNormalized,
   next:NavigationGuardNext
-): void => {
+):T | void => {
   const token = localCache.getCache(TOKEN_KEY)
   if (!token && to.name !== 'login') {
     // other page

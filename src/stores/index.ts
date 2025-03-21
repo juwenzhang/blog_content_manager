@@ -1,5 +1,5 @@
 import { createPinia } from 'pinia'
 
-const pinia = createPinia()
+const pinia:ReturnType<typeof createPinia> = createPinia()
 
 export default pinia

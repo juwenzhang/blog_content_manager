@@ -51,7 +51,7 @@
 
   const userAvatarUrl:URL = new URL('@/assets/logo.jpg', import.meta.url)
   const router:ReturnType<typeof useRouter> = useRouter()
-  const exitClickHandle = () => {
+  const exitClickHandle = <T>(): T | void => {
     localCache.removeCache(TOKEN_KEY)
     useLoginStoreAction().setClearAll()
     const files = import.meta.glob('@/router/*/*/*.ts', { eager: true })
