@@ -28,7 +28,7 @@
   const breadcrumbs = ref<Array<{name:string, url:string, title:string}>>([])
   const route:ReturnType<typeof useRoute> = useRoute()
 
-  onMounted(<T>():T | void => {
+  onMounted(() => {
     const menuData = useLoginStore.getMenuData
     const handleBreadcrumbs = mapPathToBreadcrumbs(menuData) as
       Array<{name:string, url:string, title:string}>

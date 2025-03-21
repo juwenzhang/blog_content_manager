@@ -83,6 +83,7 @@
   import { ref, onMounted } from "vue"
   import { useSystemStoreAction } from "@/stores/modules/system"
   import { formatTimeToUTC } from "@/utils/formatTime"
+  import type { userListType } from '@/types/systemType.ts'
 
   interface searchForm {
     username: string;

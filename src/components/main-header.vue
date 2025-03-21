@@ -29,7 +29,7 @@
     useHomeStore.isCollapse
   )
   const emit:ReturnType<typeof defineEmits> = defineEmits(['mainHeaderIconClick'])
-  const MainHeaderIconClick = <T>():T | void => {
+  const MainHeaderIconClick = () => {
     isFold.value = !isFold.value
     emit('mainHeaderIconClick', isFold.value)
   }

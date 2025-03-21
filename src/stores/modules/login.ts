@@ -136,6 +136,6 @@ const useLoginStore: StoreDefinition = defineStore('login', {
   }
 })
 
-export const useLoginStoreAction = (pinia: any):ReturnType<typeof useLoginStore> => {
-  return useLoginStore(pinia)
+export const useLoginStoreAction = ():ReturnType<typeof useLoginStore> => {
+  return useLoginStore()
 }
