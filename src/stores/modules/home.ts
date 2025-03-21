@@ -18,7 +18,7 @@ const useHomeStore:StoreDefinition = defineStore('home', {
       userHomeData: JSON.parse(localCache.getCache(USER_HOME_DATA)) as
         Record<string, Record<string, Array<{name:string, url:string}>>>
         | Record<string, []>,
-      isCollapse: localCache.getCache("isCollapse") as boolean || false,
+      isCollapse: localCache.getCache("isCollapse") as boolean,
     }
   },
 

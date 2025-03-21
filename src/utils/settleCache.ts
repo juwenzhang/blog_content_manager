@@ -14,7 +14,7 @@ class SettleCache {
     }
   }
 
-  getCache<T>(key:string): T | void {
+  getCache(key:string){
     const value = this.storage.getItem(key) || ""
     if (value !== null) {
       try {
