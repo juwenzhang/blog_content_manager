@@ -53,3 +53,47 @@
     * 通过我们的不同用户的菜单进行动态的注册我们的动态路由了吧，这个就是我们的基于菜单的动态路由管理吧
 * 对于实现我们的动态路由的话，我们会使用到的特性就是
   * import.meta.glob() 来实现获取得到我们需要注册的文件路径吧
+
+## nextTick
+* 这个就是我们的用来实现在 vue 中实现执行原生 DOM 的一个方法
+* 就是等待下一次 DOM 更新之后再执行我们的回调函数的一个方法吧
+* 这个底层使用的是我们的 queue 数据结构吧
+  * 他实现的是对代码进行一定的优化吧，将短时间对响应式进行处理的操作，全部收集到一个queue 中，
+  * 直到本次操作确定结束后，我们才会去执行DOM的更新，从而实现进行了性能优化吧
+* nextTick 同时也可以实现让我们的有一些代码业务逻辑在合适的时机进行执行回调吧
+* nextTick 是什么任务呐？？？
+  * vue2 选项式 api 中的时候，微任务和宏任务之间在互相交替改变
+  * vue3 中的话，响应式系统中正式确定是一个: `微任务`了
+```vue
+<template>
+  <div>
+    
+  </div>
+</template>
+
+<script setup>
+import { ref, nextTick } from 'vue'
+
+const count = ref(0)
+
+async function increment() {
+  count.value+=1
+
+  // DOM 还未更新
+  console.log(document.getElementById('counter').textContent) // 0
+
+  await nextTick()
+  // DOM 此时已经更新
+  console.log(document.getElementById('counter').textContent) // 1
+}
+</script>
+
+<template>
+  <button id="counter" @click="increment">{{ count }}</button>
+</template>
+```
+* 简单分析官方示例吧
+  * await nextTick() 会立即执行，这是 event loop 的一个特性之一吧
+  * await nextTick() 会返回一个 Promise 对象，同时后面的任务全部被放于 微任务队列中进行执行了
+    * 源码的实现是: 如果内部有一个 fn 的回调函数，那么直接被存放于微任务中进行执行吧: `Promise.resolve().then(fn)`
+    * 所以说 nextTick 是一个微任务

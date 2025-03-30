@@ -40,82 +40,82 @@
 </template>
 
 <script setup lang="ts" name="MainHeaderInfo">
-  import { ChatDotRound, CircleClose, InfoFilled,
-    Lock, Message, Search
-  } from '@element-plus/icons-vue'
-  import { useRouter } from 'vue-router'
-  import { localCache } from '@/utils/settleCache.ts'
-  import { TOKEN_KEY } from '@/constant'
-  import { useLoginStoreAction } from '@/stores/modules/login.ts'
-  import type { RouteType } from '@/types/RouteType.ts'
+import { ChatDotRound, CircleClose, InfoFilled,
+  Lock, Message, Search
+} from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
+import { localCache } from '@/utils/settleCache.ts'
+import { TOKEN_KEY } from '@/constant'
+import { useLoginStoreAction } from '@/stores/modules/login.ts'
+import type { RouteType } from '@/types/RouteType.ts'
 
-  const userAvatarUrl:URL = new URL('@/assets/logo.jpg', import.meta.url)
-  const router:ReturnType<typeof useRouter> = useRouter()
-  const exitClickHandle = () => {
-    localCache.removeCache(TOKEN_KEY)
-    useLoginStoreAction().setClearAll()
-    const files = import.meta.glob('@/router/*/*/*.ts', { eager: true })
-    for(const key in files) {
-      const module = files[key] as { default: RouteType }
-      if (router.hasRoute(module.default.name as string)) {
-        router.removeRoute(module.default.name as string)
-      }
+const userAvatarUrl:URL = new URL('@/assets/logo.jpg', import.meta.url)
+const router:ReturnType<typeof useRouter> = useRouter()
+const exitClickHandle = () => {
+  localCache.removeCache(TOKEN_KEY)
+  useLoginStoreAction().setClearAll()
+  const files = import.meta.glob('@/router/*/*/*.ts', { eager: true })
+  for(const key in files) {
+    const module = files[key] as { default: RouteType }
+    if (router.hasRoute(module.default.name as string)) {
+      router.removeRoute(module.default.name as string)
     }
-    localCache.removeCache('localRoutes')
-    router.push('/login')
   }
+  localCache.removeCache('localRoutes')
+  router.push('/login')
+}
 </script>
 
 <style scoped lang="less">
-  .main-header-info {
+.main-header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .main-header-info-operation {
     display: flex;
-    align-items: center;
     gap: 10px;
-
-    .main-header-info-operation {
+    span {
+      position: relative;
       display: flex;
-      gap: 10px;
-      span {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 35px;
-        &:hover {
-          background-color: #f8ebeb;
-        }
-        i {
-          font-size: 20px;
-        }
-        .dot {
-          position: absolute;
-          top: 3px;
-          right: 3px;
-          z-index: 10;
-          width: 6px;
-          height: 6px;
-          background-color: red;
-          border-radius: 100%;
-        }
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 35px;
+      &:hover {
+        background-color: #f8ebeb;
       }
-    }
-    .main-header-info-info {
-      :global(.el-dropdown-menu__item) {  /* from global get styleName :deep 一样的呐 */
-        line-height: 36px !important;
-        padding: 6px 22px;
-        font-size: 14px;
+      i {
+        font-size: 20px;
       }
-      .main-header-dropdown {
-        display: inline-flex;
-        align-items: center;
-        gap: 2px;
-        cursor: pointer;
-
-        .header-username {
-          margin-left: 5px;
-        }
+      .dot {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        z-index: 10;
+        width: 6px;
+        height: 6px;
+        background-color: red;
+        border-radius: 100%;
       }
     }
   }
+  .main-header-info-info {
+    :global(.el-dropdown-menu__item) {  /* from global get styleName :deep 一样的呐 */
+      line-height: 36px !important;
+      padding: 6px 22px;
+      font-size: 14px;
+    }
+    .main-header-dropdown {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+
+      .header-username {
+        margin-left: 5px;
+      }
+    }
+  }
+}
 </style>

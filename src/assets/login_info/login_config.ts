@@ -10,7 +10,7 @@ interface LoginConfigPhone {
 
 export const loginConfigCode: loginConfigCode = {
     username: 'juwenzhang',
-    password: '451674jh'
+    password: '451674231jzh123213'
 }
 
 export const loginConfigPhone: LoginConfigPhone = {

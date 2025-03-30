@@ -48,6 +48,9 @@ declare module 'vue' {
     MainHeader: typeof import('./src/components/main-header.vue')['default']
     MainHeaderInfo: typeof import('./src/components/main-header-info.vue')['default']
     MainNavMenu: typeof import('./src/components/main-nav-menu.vue')['default']
+    PageContent: typeof import('./src/components/page-content.vue')['default']
+    PageModel: typeof import('./src/components/page-model.vue')['default']
+    PageSearch: typeof import('./src/components/page-search.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

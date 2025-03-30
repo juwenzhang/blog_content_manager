@@ -77,69 +77,69 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, onMounted } from 'vue'
-  import { useLoginStoreAction } from '@/stores/modules/login.ts'
-  import { login_message_data } from '@/assets/data/loginData.ts'
-  import { ElButton } from 'element-plus'
-  import LoginPanelAccount from '@/views/login/components/login-panel-account.vue'
-  import LoginPanelPhone from '@/views/login/components/login-panel-phone.vue'
+import { ref, watch, onMounted } from 'vue'
+import { useLoginStoreAction } from '@/stores/modules/login.ts'
+import { login_message_data } from '@/assets/data/loginData.ts'
+import { ElButton } from 'element-plus'
+import LoginPanelAccount from '@/views/login/components/login-panel-account.vue'
+import LoginPanelPhone from '@/views/login/components/login-panel-phone.vue'
 
-  type LoginPanelAccountInstance = InstanceType<typeof LoginPanelAccount>
-  type LoginPanelPhoneInstance = InstanceType<typeof LoginPanelPhone>
-  type ElButtonInstance = InstanceType<typeof ElButton>
+type LoginPanelAccountInstance = InstanceType<typeof LoginPanelAccount>
+type LoginPanelPhoneInstance = InstanceType<typeof LoginPanelPhone>
+type ElButtonInstance = InstanceType<typeof ElButton>
 
-  const useLoginStore:ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
-  const isRemPWD:ReturnType<typeof ref<boolean>> = ref<boolean>(useLoginStore.isRemPWD || false)
-  const activeName:ReturnType<typeof ref<string>> = ref<string>(useLoginStore.type || 'account')
-  const accountRef:ReturnType<typeof ref<LoginPanelAccountInstance | any>> = ref<LoginPanelAccountInstance | any>()
-  const phoneRef:ReturnType<typeof ref<LoginPanelPhoneInstance | any>> = ref<LoginPanelPhoneInstance | any>()
-  const buttonRef:ReturnType<typeof ref<ElButtonInstance | any>> = ref<ElButtonInstance>()
+const useLoginStore:ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
+const isRemPWD:ReturnType<typeof ref<boolean>> = ref<boolean>(useLoginStore.isRemPWD || false)
+const activeName:ReturnType<typeof ref<string>> = ref<string>(useLoginStore.type || 'account')
+const accountRef:ReturnType<typeof ref<LoginPanelAccountInstance | any>> = ref<LoginPanelAccountInstance | any>()
+const phoneRef:ReturnType<typeof ref<LoginPanelPhoneInstance | any>> = ref<LoginPanelPhoneInstance | any>()
+const buttonRef:ReturnType<typeof ref<ElButtonInstance | any>> = ref<ElButtonInstance>()
 
-  const LoginHandleSelect:ReturnType<typeof ref<() => void>> = ref<() => void>()
-  onMounted(<T>():T | void => {
-    LoginHandleSelect.value = () => {
-      switch (activeName.value) {
-        case 'account':
-          accountRef.value.LoginHandleAccountAction(isRemPWD.value)
-          break;
-        case 'phone':
-          phoneRef.value.LoginHandlePhoneAction(isRemPWD.value)
-          break;
-      }
+const LoginHandleSelect:ReturnType<typeof ref<() => void>> = ref<() => void>()
+onMounted(<T>():T | void => {
+  LoginHandleSelect.value = () => {
+    switch (activeName.value) {
+      case 'account':
+        accountRef.value.LoginHandleAccountAction(isRemPWD.value)
+        break;
+      case 'phone':
+        phoneRef.value.LoginHandlePhoneAction(isRemPWD.value)
+        break;
     }
-  })
-  watch(isRemPWD, (newValue) => {
-    useLoginStore.setIsRemPWD(newValue)
-  })
-  watch(activeName, (newValue) => {
-    useLoginStore.setType(newValue)
-  })
+  }
+})
+watch(isRemPWD, (newValue) => {
+  useLoginStore.setIsRemPWD(newValue)
+})
+watch(activeName, (newValue) => {
+  useLoginStore.setType(newValue)
+})
 </script>
 
 <style scoped lang="less">
-  .login-panel {
-    width: 330px;
+.login-panel {
+  width: 330px;
+  margin-bottom: 15px;
+  transform: translateY(-25%);
+
+  .login-panel-title {
+    text-align: center;
     margin-bottom: 15px;
-    transform: translateY(-25%);
+  }
 
-    .login-panel-title {
-      text-align: center;
-      margin-bottom: 15px;
-    }
+  .login-panel-control-account {
+    display: flex;
+    justify-content: space-between;
+  }
 
-    .login-panel-control-account {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .login-panel-action-btn {
-      .login-panel-btn {
-        width: 100%;
-        height: 40px;
-        border-radius: 5px;
-        border-width: 1px;
-        background-color: #6bb5ea;
-      }
+  .login-panel-action-btn {
+    .login-panel-btn {
+      width: 100%;
+      height: 40px;
+      border-radius: 5px;
+      border-width: 1px;
+      background-color: #6bb5ea;
     }
   }
+}
 </style>

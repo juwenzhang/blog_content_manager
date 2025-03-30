@@ -39,75 +39,75 @@
 </template>
 
 <script setup lang="ts" name="user-model">
-  import { ref, reactive } from 'vue'
-  import type { ElForm } from 'element-plus'
-  interface formDataType {
-    username: string,
-    realName: string,
-    password: string,
-    phone: string,
-    department_id: string,
-    role: string
-  }
+import { ref, reactive } from 'vue'
+import type { ElForm } from 'element-plus'
+interface formDataType {
+  username: string,
+  realName: string,
+  password: string,
+  phone: string,
+  department_id: string,
+  role: string
+}
 
-  const formRef: ReturnType<typeof ref<InstanceType<typeof ElForm>>> = ref<InstanceType<typeof ElForm>>()
-  const dialogVisible:ReturnType<typeof ref<boolean>> = ref<boolean>(false)
-  let formData: ReturnType<typeof reactive<formDataType>> = reactive<formDataType>({
+const formRef: ReturnType<typeof ref<InstanceType<typeof ElForm>>> = ref<InstanceType<typeof ElForm>>()
+const dialogVisible:ReturnType<typeof ref<boolean>> = ref<boolean>(false)
+let formData: ReturnType<typeof reactive<formDataType>> = reactive<formDataType>({
+  username: '',
+  realName: '',
+  password: '',
+  phone: '',
+  department_id: '',
+  role: ''
+})
+
+const changeDialogVisible:<T>() => T | void = <T>():T | void => {
+  dialogVisible.value = !dialogVisible.value
+  formData = {
     username: '',
     realName: '',
     password: '',
     phone: '',
     department_id: '',
     role: ''
-  })
+  }
+}
+const confirmBtnClickHandle:<T>() => T | void = <T>():T | void => {
+  changeDialogVisible()
+}
+const changeFormData = <T, K>(EditFormData: K):T | void => {
+  changeDialogVisible()
+  const data = EditFormData as {
+    name: string
+    realName: string
+    roleId: string
+    statusId: string
+    departmentId: string
+    create_time: string
+    update_time: string
+  }
+  formData.username = data.name
+  formData.realName = data.realName
+  formData.role = data.roleId
+  formData.department_id = data.departmentId
+}
 
-  const changeDialogVisible:<T>() => T | void = <T>():T | void => {
-    dialogVisible.value = !dialogVisible.value
-    formData = {
-      username: '',
-      realName: '',
-      password: '',
-      phone: '',
-      department_id: '',
-      role: ''
-    }
-  }
-  const confirmBtnClickHandle:<T>() => T | void = <T>():T | void => {
-    changeDialogVisible()
-  }
-  const changeFormData = <T, K>(EditFormData: K):T | void => {
-    changeDialogVisible()
-    const data = EditFormData as {
-      name: string
-      realName: string
-      roleId: string
-      statusId: string
-      departmentId: string
-      create_time: string
-      update_time: string
-    }
-    formData.username = data.name
-    formData.realName = data.realName
-    formData.role = data.roleId
-    formData.department_id = data.departmentId
-  }
-
-  defineExpose({
-    changeDialogVisible,
-    changeFormData
-  })
+defineExpose({
+  changeDialogVisible,
+  changeFormData
+})
 </script>
 
 <style scoped lang="less">
-  .system-user-model {
+.system-user-model {
 
-    .system-user-model-form {
-      padding: 0 20px;
-    }
-
-    .system-user-model-dialog-footer {
-      display: flex;
-      justify-content: flex-end;
-    }
+  .system-user-model-form {
+    padding: 0 20px;
   }
+
+  .system-user-model-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
 </style>

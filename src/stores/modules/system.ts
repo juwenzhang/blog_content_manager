@@ -22,12 +22,13 @@ const useSystemStore: StoreDefinition = defineStore('system', {
   getters: {
     getUserList(): systemStateType['systemUserList'] {
       return this.systemUserList
-    }
+    },
   },
 
   actions: {
-    async postUserListRequest(query_params: { offset: number, size: number, searchForm:Partial<searchForm> }) {
+    async postUserListRequest(pageName: string, query_params: { offset: number, size: number, searchForm:Partial<searchForm> }) {
       try {
+        console.log(pageName)
         const userList = await postUserListRequest(query_params)
         const needShowData = userList?.data?.list.filter(<T>(item: T, index: number) => {
           if(index >= query_params.offset && index < query_params.offset + query_params.size) {

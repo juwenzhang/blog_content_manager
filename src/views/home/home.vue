@@ -20,9 +20,9 @@
 
 <script setup lang="ts" name="home">
 import { onMounted, ref, watch } from 'vue'
-  import MainNavMenu from '@/components/main-nav-menu.vue'
-  import MainHeader from '@/components/main-header.vue'
-  import MainContainer from '@/components/main-container.vue'
+  import { MainNavMenu } from '@/components/index.ts'
+  import { MainHeader } from '@/components/index.ts'
+  import { MainContainer } from '@/components/index.ts'
   import { useHomeStoreAction } from '@/stores/modules/home.ts'
   import { localCache } from '@/utils/settleCache.ts'
 

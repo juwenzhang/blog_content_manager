@@ -80,95 +80,95 @@
 </template>
 
 <script setup lang="ts" name="UserContent">
-  import { ref, onMounted } from "vue"
-  import { useSystemStoreAction } from "@/stores/modules/system"
-  import { formatTimeToUTC } from "@/utils/formatTime"
-  import type { userListType } from '@/types/systemType.ts'
+import { ref, onMounted } from "vue"
+import { useSystemStoreAction } from "@/stores/modules/system"
+import { formatTimeToUTC } from "@/utils/formatTime"
+import type { userListType } from '@/types/systemType.ts'
 
-  interface searchForm {
-    username: string;
-    phone: string;
-    email: string;
-    status: string;
-    date: string;
-  }
+interface searchForm {
+  username: string;
+  phone: string;
+  email: string;
+  status: string;
+  date: string;
+}
 
-  // init page data
-  const useSystemStore:ReturnType<typeof useSystemStoreAction> = useSystemStoreAction()
-  const userList:ReturnType<typeof ref<Partial<userListType>>> = ref<Partial<userListType>>({})
-  const columns:ReturnType<typeof ref<number>> = ref<number>(0)
-  const handleSizeChange:ReturnType<typeof ref<(val: number) => void>> = ref<(val: number) => void>(() => {})
-  const handleCurrentChange:ReturnType<typeof ref<(val: number) => void>> = ref<(val: number) => void>(() => {})
-  const currentPage = ref<number>(1)
-  const pageSize = ref<number>(10)
-  const emit = defineEmits(["showDialog", "editData"])
+// init page data
+const useSystemStore:ReturnType<typeof useSystemStoreAction> = useSystemStoreAction()
+const userList:ReturnType<typeof ref<Partial<userListType>>> = ref<Partial<userListType>>({})
+const columns:ReturnType<typeof ref<number>> = ref<number>(0)
+const handleSizeChange:ReturnType<typeof ref<(val: number) => void>> = ref<(val: number) => void>(() => {})
+const handleCurrentChange:ReturnType<typeof ref<(val: number) => void>> = ref<(val: number) => void>(() => {})
+const currentPage = ref<number>(1)
+const pageSize = ref<number>(10)
+const emit = defineEmits(["showDialog", "editData"])
 
-  // fetch data from server
-  const fetchUserListRequest = async (searchForm:Partial<searchForm> = {}) => {
-    const size = pageSize.value
-    const offset = (currentPage.value - 1) * size
-    const query_params = { size, offset, searchForm }
-    return await useSystemStore.postUserListRequest(query_params)
-  }
+// fetch data from server
+const fetchUserListRequest = async (searchForm:Partial<searchForm> = {}) => {
+  const size = pageSize.value
+  const offset = (currentPage.value - 1) * size
+  const query_params = { size, offset, searchForm }
+  return await useSystemStore.postUserListRequest("user", query_params)
+}
 
-  const handleAddData: <T>() => T | void = <T>(): T | void => {
-    emit("showDialog")
+const handleAddData: <T>() => T | void = <T>(): T | void => {
+  emit("showDialog")
+}
+const handleDeleteData: <T>(id:T) => void = async <T>(id:T) => {
+  const res = await useSystemStore.deleteUserByIdRequest(id)
+  if (res) {
+    userList.value = res
   }
-  const handleDeleteData: <T>(id:T) => void = async <T>(id:T) => {
-     const res = await useSystemStore.deleteUserByIdRequest(id)
-     if (res) {
-       userList.value = res
-     }
-  }
-  const handleEditData: <T, K>(formData: K ) => T | void
-    = <T, K>(formData: K ): T | void => {
-    emit("editData", formData)
-  }
+}
+const handleEditData: <T, K>(formData: K ) => T | void
+  = <T, K>(formData: K ): T | void => {
+  emit("editData", formData)
+}
 
-  // reset page data after page mounted
-  onMounted(async () => {
+// reset page data after page mounted
+onMounted(async () => {
+  userList.value = await fetchUserListRequest()
+  if (userList.value?.list) {
+    columns.value = 1 / Object.keys(userList.value.list[0]).length
+  }
+  handleSizeChange.value = async () => {
     userList.value = await fetchUserListRequest()
-    if (userList.value?.list) {
-      columns.value = 1 / Object.keys(userList.value.list[0]).length
-    }
-    handleSizeChange.value = async () => {
-      userList.value = await fetchUserListRequest()
-    }
-    handleCurrentChange.value = async () => {
-      userList.value = await fetchUserListRequest()
-    }
-  })
+  }
+  handleCurrentChange.value = async () => {
+    userList.value = await fetchUserListRequest()
+  }
+})
 
-  defineExpose({
-    fetchUserListRequest
-  })
+defineExpose({
+  fetchUserListRequest
+})
 </script>
 
 <style scoped lang="less">
-  .system-user-content {
-    background-color: #fff;
-    padding: 20px;
+.system-user-content {
+  background-color: #fff;
+  padding: 20px;
 
-    .system-user-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
+  .system-user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
 
-    .system-user-table {
-      cursor: pointer;
-      margin-bottom: 15px;
+  .system-user-table {
+    cursor: pointer;
+    margin-bottom: 15px;
 
-      el-table {
-        width: 100%;
-      }
-    }
-
-    .system-user-pagination {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
+    el-table {
+      width: 100%;
     }
   }
+
+  .system-user-pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
 </style>

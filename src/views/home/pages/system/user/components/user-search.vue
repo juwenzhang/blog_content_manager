@@ -88,69 +88,69 @@
 </template>
 
 <script setup lang="ts" name="UserSearch">
-  import { reactive, ref } from 'vue'
-  import type { ElForm } from 'element-plus'
-  interface searchForm {
-    username: string;
-    phone: string;
-    email: string;
-    status: string;
-    date: string;
+import { reactive, ref } from 'vue'
+import type { ElForm } from 'element-plus'
+interface searchForm {
+  username: string;
+  phone: string;
+  email: string;
+  status: string;
+  date: string;
+}
+const formRef: ReturnType<typeof ref<InstanceType<typeof ElForm>>>
+  = ref<InstanceType<typeof ElForm>>()
+const searchForm: ReturnType<typeof reactive<searchForm>>
+  = reactive<searchForm>({
+  username: '',
+  phone: '',
+  email: '',
+  status: '启用',
+  date: ''
+})
+const emit: ReturnType<typeof defineEmits> = defineEmits(['queryClick', 'resetClick'])
+const RefreshClickHandle:<T>() => T | void = <T>(): T | void => {
+  if (formRef.value) {
+    /**
+     * need attach prop on el-form-item
+     * if not, it will fail reset
+     * if you want not to use this methods to realise reset
+     * you can reset form fields by one by one
+     * searchForm.username = ''
+     * searchForm.phone = ''
+     * searchForm.email = ''
+     * searchForm.status = ''
+     * searchForm.date = ''
+     */
+    formRef.value?.resetFields()  // reset form fields
+    emit('resetClick')
   }
-  const formRef: ReturnType<typeof ref<InstanceType<typeof ElForm>>>
-    = ref<InstanceType<typeof ElForm>>()
-  const searchForm: ReturnType<typeof reactive<searchForm>>
-    = reactive<searchForm>({
-    username: '',
-    phone: '',
-    email: '',
-    status: '启用',
-    date: ''
-  })
-  const emit: ReturnType<typeof defineEmits> = defineEmits(['queryClick', 'resetClick'])
-  const RefreshClickHandle:<T>() => T | void = <T>(): T | void => {
-    if (formRef.value) {
-      /**
-       * need attach prop on el-form-item
-       * if not, it will fail reset
-       * if you want not to use this methods to realise reset
-       * you can reset form fields by one by one
-       * searchForm.username = ''
-       * searchForm.phone = ''
-       * searchForm.email = ''
-       * searchForm.status = ''
-       * searchForm.date = ''
-       */
-      formRef.value?.resetFields()  // reset form fields
-      emit('resetClick')
-    }
-  }
+}
 
-  const SearchClickHandle:<T>() => T | void = <T>(): T | void => {
-    emit('queryClick', searchForm)
-  }
+const SearchClickHandle:<T>() => T | void = <T>(): T | void => {
+  emit('queryClick', searchForm)
+}
 
-  defineExpose({
-    searchForm
-  })
+defineExpose({
+  searchForm
+})
 </script>
 
 <style scoped lang="less">
-  .system-user-search {
-    background-color: #fff;
+.system-user-search {
+  background-color: #fff;
+  padding: 20px;
+  overflow: hidden;
+  margin-bottom: 15px;
+
+  .el-form-item {
     padding: 20px;
-    overflow: hidden;
-    margin-bottom: 15px;
-
-    .el-form-item {
-      padding: 20px;
-      margin-bottom: 0;
-      cursor: pointer;
-    }
-
-    .system-user-btn {
-      text-align: right;
-      padding: 0 25px 0 0;
-    }
+    margin-bottom: 0;
+    cursor: pointer;
   }
+
+  .system-user-btn {
+    text-align: right;
+    padding: 0 25px 0 0;
+  }
+}
 </style>
