@@ -1,0 +1,1 @@
+import{_ as a,a as s,o}from"./index-9EFiyGD-.js";const e={},c={class:"analysis-dashboard"};function r(n,t){return o(),s("div",c," analysis-dashboard ")}const _=a(e,[["render",r]]);export{_ as default};
