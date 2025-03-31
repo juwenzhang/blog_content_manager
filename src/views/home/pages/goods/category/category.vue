@@ -1,11 +1,5 @@
-<template>
+<template></template>
 
-</template>
+<script setup lang="ts" name="category"></script>
 
-<script setup lang="ts" name="category">
-
-</script>
-
-<style scoped lang="less">
-
-</style>
+<style scoped lang="less"></style>

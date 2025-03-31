@@ -1,13 +1,7 @@
 <template>
-  <div class="analysis-overview">
-    analysis-overview
-  </div>
+  <div class="analysis-overview">analysis-overview</div>
 </template>
 
-<script setup lang="ts" name="overview">
+<script setup lang="ts" name="overview"></script>
 
-</script>
-
-<style scoped lang="less">
-
-</style>
+<style scoped lang="less"></style>

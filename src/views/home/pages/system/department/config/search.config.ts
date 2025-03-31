@@ -17,5 +17,5 @@ export const searchConfig = {
       label: '邮箱',
       field: 'email',
     },
-  ]
+  ],
 }

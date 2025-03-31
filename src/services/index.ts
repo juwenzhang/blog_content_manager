@@ -2,11 +2,11 @@
 import {
   accountLoginRequest,
   phoneLoginRequest,
-  getUserInfoByIdRequest
-} from "@/services/modules/login/login"
+  getUserInfoByIdRequest,
+} from '@/services/modules/login/login'
 
 export const userListRequest = {
   accountLoginRequest,
   phoneLoginRequest,
-  getUserInfoByIdRequest
+  getUserInfoByIdRequest,
 }

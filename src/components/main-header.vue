@@ -2,16 +2,16 @@
   <div class="main-header">
     <div class="main-header-icon" @click="MainHeaderIconClick">
       <el-icon size="30px">
-        <component :is="isFold ? Expand : Fold"/>
+        <component :is="isFold ? Expand : Fold" />
       </el-icon>
     </div>
 
     <div class="main-header-content">
       <div class="main-header-content-breadcrumb">
-        <MainCrumb/>
+        <MainCrumb />
       </div>
       <div class="main-header-content-info">
-        <MainHeaderInfo/>
+        <MainHeaderInfo />
       </div>
     </div>
   </div>
@@ -24,11 +24,9 @@ import { Expand, Fold } from '@element-plus/icons-vue'
 import MainHeaderInfo from '@/components/main-header-info.vue'
 import MainCrumb from '@/components/main-crumb.vue'
 
-const useHomeStore:ReturnType<typeof useHomeStoreAction> = useHomeStoreAction()
-const isFold:ReturnType<typeof ref<boolean>> = ref<boolean>(
-  useHomeStore.isCollapse
-)
-const emit:ReturnType<typeof defineEmits> = defineEmits(['mainHeaderIconClick'])
+const useHomeStore: ReturnType<typeof useHomeStoreAction> = useHomeStoreAction()
+const isFold: ReturnType<typeof ref<boolean>> = ref<boolean>(useHomeStore.isCollapse)
+const emit: ReturnType<typeof defineEmits> = defineEmits(['mainHeaderIconClick'])
 const MainHeaderIconClick = () => {
   isFold.value = !isFold.value
   emit('mainHeaderIconClick', isFold.value)

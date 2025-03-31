@@ -2,9 +2,9 @@ import { ref } from 'vue'
 import { PageModel } from '@/components'
 
 export interface usePageModelHookReturnType {
-  modelRef: any;
-  showDialogHandler: () => void;
-  editDataHandler: <T, K>(formData: T) => T | void;
+  modelRef: any
+  showDialogHandler: () => void
+  editDataHandler: <T, K>(formData: T) => T | void
 }
 
 function usePageContentHook(): usePageModelHookReturnType {
@@ -21,7 +21,7 @@ function usePageContentHook(): usePageModelHookReturnType {
   return {
     modelRef,
     showDialogHandler,
-    editDataHandler
+    editDataHandler,
   }
 }
 

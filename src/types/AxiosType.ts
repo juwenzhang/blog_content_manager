@@ -1,8 +1,4 @@
-import type {
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig
-} from 'axios'
+import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 interface MyInterceptors<T> {
   requestSuccessFn?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig

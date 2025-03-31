@@ -1,9 +1,6 @@
 import axios, { AxiosHeaders } from 'axios'
-import type {
-  AxiosInstance,
-  InternalAxiosRequestConfig,
-} from "axios"
-import type { MyAxiosRequestConfig } from "@/types/AxiosType.ts"
+import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
+import type { MyAxiosRequestConfig } from '@/types/AxiosType.ts'
 
 // 开始真真的封装吧
 class MyAxiosRequest {
@@ -15,86 +12,80 @@ class MyAxiosRequest {
     // 全局请求拦截器
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        const headers: AxiosHeaders = new AxiosHeaders();
-        headers.set(
-          "Content-Type",
-          "application/json;charset=UTF-8"
-        );
-        headers.set(
-          "Authorization",
-          localStorage.getItem("token") || ""
-        );
-        headers.set(
-          "Accept",
-          "application/json"
-        );
-        config.headers = headers;
-        return config;
+        const headers: AxiosHeaders = new AxiosHeaders()
+        headers.set('Content-Type', 'application/json;charset=UTF-8')
+        headers.set('Authorization', localStorage.getItem('token') || '')
+        headers.set('Accept', 'application/json')
+        config.headers = headers
+        return config
       },
-        err => {
-        return Promise.reject(err);
-      }
-    );
+      (err) => {
+        return Promise.reject(err)
+      },
+    )
 
     // 全局响应拦截器
-    this.instance.interceptors.response.use(res => {
-      return res;
-    }, err => {
-      switch (err.response.status){
-        case 400:
-          return Promise.reject({
-            message: "400 Bad Request",
-            status: 400,
-            data: err.response.data,
-          });
-        case 401:
-          return Promise.reject({
-            message: "401 Unauthorized",
-            status: 401,
-            data: err.response.data,
-          });
-        case 403:
-          return Promise.reject({
-            message: "403 Forbidden",
-            status: 403,
-            data: err.response.data,
-          });
-        case 404:
-          return Promise.reject({
-            message: "404 Not Found",
-            status: 404,
-            data: err.response.data,
-          });
-        case 500:
-          return Promise.reject({
-            message: "500 Internal Server Error",
-            status: 500,
-            data: err.response.data,
-          });
-        case 502:
-          return Promise.reject({
-            message: "502 Bad Gateway",
-            status: 502,
-            data: err.response.data,
-          });
-        case 503:
-          return Promise.reject({
-            message: "503 Service Unavailable",
-            status: 503,
-            data: err.response.data,
-          });
-      }
-    });
+    this.instance.interceptors.response.use(
+      (res) => {
+        return res
+      },
+      (err) => {
+        switch (err.response.status) {
+          case 400:
+            return Promise.reject({
+              message: '400 Bad Request',
+              status: 400,
+              data: err.response.data,
+            })
+          case 401:
+            return Promise.reject({
+              message: '401 Unauthorized',
+              status: 401,
+              data: err.response.data,
+            })
+          case 403:
+            return Promise.reject({
+              message: '403 Forbidden',
+              status: 403,
+              data: err.response.data,
+            })
+          case 404:
+            return Promise.reject({
+              message: '404 Not Found',
+              status: 404,
+              data: err.response.data,
+            })
+          case 500:
+            return Promise.reject({
+              message: '500 Internal Server Error',
+              status: 500,
+              data: err.response.data,
+            })
+          case 502:
+            return Promise.reject({
+              message: '502 Bad Gateway',
+              status: 502,
+              data: err.response.data,
+            })
+          case 503:
+            return Promise.reject({
+              message: '503 Service Unavailable',
+              status: 503,
+              data: err.response.data,
+            })
+        }
+      },
+    )
 
     if (config?.interceptors) {
       this.instance.interceptors.request.use(
         config.interceptors?.requestSuccessFn,
-        config.interceptors?.requestFailFn
-      );
+        config.interceptors?.requestFailFn,
+      )
       this.instance.interceptors.response.use(
         config.interceptors?.responseSuccessFn,
-        config.interceptors?.responseFailFn
-      );
+        config.interceptors?.responseFailFn,
+      )
     }
   }
 
@@ -102,43 +93,46 @@ class MyAxiosRequest {
   request<T = any>(config: MyAxiosRequestConfig) {
     if (config.interceptors?.requestSuccessFn) {
       config = config.interceptors.requestSuccessFn(
-        config as InternalAxiosRequestConfig
-      ) as MyAxiosRequestConfig;
+        config as InternalAxiosRequestConfig,
+      ) as MyAxiosRequestConfig
     }
     return new Promise<T>((resolve, reject) => {
-      this.instance.request<T>(config).then(res => {
-        if (config.interceptors?.responseSuccessFn) {
-          res = config.interceptors.responseSuccessFn(res);
-        }
-        resolve(res.data);
-      }).catch(err => {
-        if (config.interceptors?.responseFailFn) {
-          err = config.interceptors.responseFailFn(err);
-        }
-        reject(err);
-      })
+      this.instance
+        .request<T>(config)
+        .then((res) => {
+          if (config.interceptors?.responseSuccessFn) {
+            res = config.interceptors.responseSuccessFn(res)
+          }
+          resolve(res.data)
+        })
+        .catch((err) => {
+          if (config.interceptors?.responseFailFn) {
+            err = config.interceptors.responseFailFn(err)
+          }
+          reject(err)
+        })
     })
   }
 
   get<T = any>(config: MyAxiosRequestConfig) {
-    return this.request<T>({ ...config, method: "get" });
+    return this.request<T>({ ...config, method: 'get' })
   }
 
   post<T = any>(config: MyAxiosRequestConfig) {
-    return this.request<T>({ ...config, method: "post" });
+    return this.request<T>({ ...config, method: 'post' })
   }
 
   put<T = any>(config: MyAxiosRequestConfig) {
-    return this.request<T>({ ...config, method: "put" });
+    return this.request<T>({ ...config, method: 'put' })
   }
 
   delete<T = any>(config: MyAxiosRequestConfig) {
-    return this.request<T>({ ...config, method: "delete" });
+    return this.request<T>({ ...config, method: 'delete' })
   }
 
   options<T = any>(config: MyAxiosRequestConfig) {
-    return this.request<T>({ ...config, method: "options" });
+    return this.request<T>({ ...config, method: 'options' })
   }
 }
 
-export default MyAxiosRequest;
+export default MyAxiosRequest

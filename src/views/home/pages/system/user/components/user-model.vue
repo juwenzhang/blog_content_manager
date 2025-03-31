@@ -4,26 +4,26 @@
       <div class="system-user-model-form">
         <el-form label-width="80px" :model="formData" size="large" ref="formRef">
           <el-form-item prop="username" label="用户名">
-            <el-input v-model="formData.username" placeholder="请输入用户名"/>
+            <el-input v-model="formData.username" placeholder="请输入用户名" />
           </el-form-item>
           <el-form-item prop="realName" label="真实姓名">
-            <el-input v-model="formData.realName" placeholder="请输入真实姓名"/>
+            <el-input v-model="formData.realName" placeholder="请输入真实姓名" />
           </el-form-item>
           <el-form-item prop="password" label="密码">
-            <el-input v-model="formData.password" placeholder="请输入密码" show-password/>
+            <el-input v-model="formData.password" placeholder="请输入密码" show-password />
           </el-form-item>
           <el-form-item prop="phone" label="手机号">
-            <el-input v-model="formData.phone" placeholder="请输入手机号"/>
+            <el-input v-model="formData.phone" placeholder="请输入手机号" />
           </el-form-item>
           <el-form-item prop="department_id" label="部门编号">
-            <el-input v-model="formData.department_id" placeholder="请输入部门编号"/>
+            <el-input v-model="formData.department_id" placeholder="请输入部门编号" />
           </el-form-item>
           <el-form-item prop="role" label="角色">
             <el-select v-model="formData.role" placeholder="请选择角色">
-              <el-option label="测试用户" value="测试用户"/>
-              <el-option label="普通用户" value="普通用户"/>
-              <el-option label="管理员" value="管理员"/>
-              <el-option label="超级管理员" value="超级管理员"/>
+              <el-option label="测试用户" value="测试用户" />
+              <el-option label="普通用户" value="普通用户" />
+              <el-option label="管理员" value="管理员" />
+              <el-option label="超级管理员" value="超级管理员" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -42,26 +42,27 @@
 import { ref, reactive } from 'vue'
 import type { ElForm } from 'element-plus'
 interface formDataType {
-  username: string,
-  realName: string,
-  password: string,
-  phone: string,
-  department_id: string,
+  username: string
+  realName: string
+  password: string
+  phone: string
+  department_id: string
   role: string
 }
 
-const formRef: ReturnType<typeof ref<InstanceType<typeof ElForm>>> = ref<InstanceType<typeof ElForm>>()
-const dialogVisible:ReturnType<typeof ref<boolean>> = ref<boolean>(false)
+const formRef: ReturnType<typeof ref<InstanceType<typeof ElForm>>> =
+  ref<InstanceType<typeof ElForm>>()
+const dialogVisible: ReturnType<typeof ref<boolean>> = ref<boolean>(false)
 let formData: ReturnType<typeof reactive<formDataType>> = reactive<formDataType>({
   username: '',
   realName: '',
   password: '',
   phone: '',
   department_id: '',
-  role: ''
+  role: '',
 })
 
-const changeDialogVisible:<T>() => T | void = <T>():T | void => {
+const changeDialogVisible: <T>() => T | void = <T,>(): T | void => {
   dialogVisible.value = !dialogVisible.value
   formData = {
     username: '',
@@ -69,13 +70,13 @@ const changeDialogVisible:<T>() => T | void = <T>():T | void => {
     password: '',
     phone: '',
     department_id: '',
-    role: ''
+    role: '',
   }
 }
-const confirmBtnClickHandle:<T>() => T | void = <T>():T | void => {
+const confirmBtnClickHandle: <T>() => T | void = <T,>(): T | void => {
   changeDialogVisible()
 }
-const changeFormData = <T, K>(EditFormData: K):T | void => {
+const changeFormData = <T, K>(EditFormData: K): T | void => {
   changeDialogVisible()
   const data = EditFormData as {
     name: string
@@ -94,13 +95,12 @@ const changeFormData = <T, K>(EditFormData: K):T | void => {
 
 defineExpose({
   changeDialogVisible,
-  changeFormData
+  changeFormData,
 })
 </script>
 
 <style scoped lang="less">
 .system-user-model {
-
   .system-user-model-form {
     padding: 0 20px;
   }

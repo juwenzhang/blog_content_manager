@@ -1,6 +1,6 @@
 <template>
   <div class="blog-content-manager-login">
-    <LoginPanel/>
+    <LoginPanel />
   </div>
 </template>
 
@@ -11,12 +11,12 @@ import { localCache } from '@/utils/settleCache.ts'
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 
-const router:ReturnType<typeof useRouter> = useRouter()
-onMounted(<T>(): T | void => {
+const router: ReturnType<typeof useRouter> = useRouter()
+onMounted(<T,>(): T | void => {
   const token = localCache.getCache('token')
   if (token) {
     localCache.removeCache(TOKEN_KEY)
-    router.push("/login")
+    router.push('/login')
   }
 })
 </script>

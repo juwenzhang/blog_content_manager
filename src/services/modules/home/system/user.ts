@@ -1,22 +1,25 @@
 import axiosRequest from '@/services/request/config.ts'
 
 interface searchForm {
-  username: string;
-  phone: string;
-  email: string;
-  status: string;
-  date: string;
+  username: string
+  phone: string
+  email: string
+  status: string
+  date: string
 }
 
 export const postUserListRequest = (
-  query_params: {offset: number, size: number, searchForm: Partial<searchForm>} =
-    {offset: 0, size: 10, searchForm: {}}
+  query_params: { offset: number; size: number; searchForm: Partial<searchForm> } = {
+    offset: 0,
+    size: 10,
+    searchForm: {},
+  },
 ) => {
   return axiosRequest.post<any>({
     url: '/user/list',
     data: {
-      ...query_params
-    }
+      ...query_params,
+    },
   })
 }
 

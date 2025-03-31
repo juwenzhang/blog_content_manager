@@ -10,9 +10,7 @@
       @show-dialog="showDialogHandler"
       @edit-data="editDataHandler"
     />
-    <UserModel
-      ref="userModelRef"
-    />
+    <UserModel ref="userModelRef" />
   </div>
 </template>
 
@@ -22,28 +20,28 @@ import UserContent from '@/views/home/pages/system/user/components/user-content.
 import UserModel from '@/views/home/pages/system/user/components/user-model.vue'
 import { ref, onMounted } from 'vue'
 
-const userContentRef: ReturnType<typeof ref<InstanceType<typeof UserContent>>>
-  = ref<InstanceType<typeof UserContent>>()
-const userSearchRef: ReturnType<typeof ref<InstanceType<typeof UserSearch>>>
-  = ref<InstanceType<typeof UserSearch>>()
-const userModelRef: ReturnType<typeof ref<InstanceType<typeof UserModel>>>
-  = ref<InstanceType<typeof UserModel>>()
+const userContentRef: ReturnType<typeof ref<InstanceType<typeof UserContent>>> =
+  ref<InstanceType<typeof UserContent>>()
+const userSearchRef: ReturnType<typeof ref<InstanceType<typeof UserSearch>>> =
+  ref<InstanceType<typeof UserSearch>>()
+const userModelRef: ReturnType<typeof ref<InstanceType<typeof UserModel>>> =
+  ref<InstanceType<typeof UserModel>>()
 
 interface searchForm {
-  username: string;
-  phone: string;
-  email: string;
-  status: string;
-  date: string;
+  username: string
+  phone: string
+  email: string
+  status: string
+  date: string
 }
 
-const queryClickHandler = <T>(searchForm: Partial<searchForm>): T | void => {
+const queryClickHandler = <T,>(searchForm: Partial<searchForm>): T | void => {
   userContentRef.value?.fetchUserListRequest(searchForm)
 }
-const resetClickHandler = <T>(): T | void => {
+const resetClickHandler = <T,>(): T | void => {
   userContentRef.value?.fetchUserListRequest({})
 }
-const showDialogHandler = <T>(): T | void => {
+const showDialogHandler = <T,>(): T | void => {
   userModelRef.value?.changeDialogVisible()
 }
 const editDataHandler = <T, K>(formData: K): T | void => {

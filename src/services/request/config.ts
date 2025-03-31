@@ -5,9 +5,9 @@ import { TOKEN_KEY } from '@/constant'
 
 let BASE_URL: string
 if (import.meta.env.PROD) {
-  BASE_URL = "https://juwenzhang.com/prod/api/"
+  BASE_URL = 'https://juwenzhang.com/prod/api/'
 } else {
-  BASE_URL = "https://juwenzhang.com/dev/api/"
+  BASE_URL = 'https://juwenzhang.com/dev/api/'
 }
 const TIMEOUT: number = 10000
 const config: MyAxiosRequestConfig = {
@@ -16,15 +16,13 @@ const config: MyAxiosRequestConfig = {
   interceptors: {
     requestSuccessFn: (config) => {
       const token = localCache.getCache(TOKEN_KEY)
-      if(config?.headers && token) {
-        config.headers!.Authorization = "Bearer " + token
+      if (config?.headers && token) {
+        config.headers!.Authorization = 'Bearer ' + token
       }
       return config
     },
-    requestFailFn: (err: any) => {
-
-    }
-  }
+    requestFailFn: (err: any) => {},
+  },
 }
 const axiosRequest = new MyAxiosRequest(config)
 export default axiosRequest

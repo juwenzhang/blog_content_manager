@@ -20,25 +20,31 @@
 </template>
 
 <script setup lang="ts" name="MainCrumb">
-import { useLoginStoreAction } from "@/stores/modules/login.ts"
-import { mapPathToBreadcrumbs } from "@/utils/map_routes"
+import { useLoginStoreAction } from '@/stores/modules/login.ts'
+import { mapPathToBreadcrumbs } from '@/utils/map_routes'
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
-const useLoginStore:ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
-const breadcrumbs = ref<Array<{name:string, url:string, title:string}>>([])
-const route:ReturnType<typeof useRoute> = useRoute()
+const useLoginStore: ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
+const breadcrumbs = ref<Array<{ name: string; url: string; title: string }>>([])
+const route: ReturnType<typeof useRoute> = useRoute()
 
 onMounted(() => {
   const menuData = useLoginStore.getMenuData
-  const handleBreadcrumbs = mapPathToBreadcrumbs(menuData) as
-    Array<{name:string, url:string, title:string}>
-  watch(route, (newValue) => {
-    breadcrumbs.value = handleBreadcrumbs.filter((item) => {
-      return item.url === newValue.path
-    })
-  }, { immediate: true })
+  const handleBreadcrumbs = mapPathToBreadcrumbs(menuData) as Array<{
+    name: string
+    url: string
+    title: string
+  }>
+  watch(
+    route,
+    (newValue) => {
+      breadcrumbs.value = handleBreadcrumbs.filter((item) => {
+        return item.url === newValue.path
+      })
+    },
+    { immediate: true },
+  )
 })
 </script>
 
-<style scoped lang="less">
-</style>
+<style scoped lang="less"></style>

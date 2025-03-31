@@ -1,34 +1,21 @@
 <template>
   <div class="system-user-search">
-    <el-form
-      :model="searchForm"
-      label-width="80px"
-      ref="formRef"
-      size="large"
-    >
+    <el-form :model="searchForm" label-width="80px" ref="formRef" size="large">
       <el-row :gutter="20">
         <template v-for="(item, index) in formItems" :key="index">
           <el-col :span="8">
             <el-form-item v-bind="item">
-              <el-input/>
+              <el-input />
             </el-form-item>
           </el-col>
         </template>
       </el-row>
 
       <div class="system-user-btn">
-        <el-button
-          type="warning"
-          size="large"
-          :icon="'Refresh'"
-          @click="RefreshClickHandle">
+        <el-button type="warning" size="large" :icon="'Refresh'" @click="RefreshClickHandle">
           重置
         </el-button>
-        <el-button
-          type="primary"
-          size="large"
-          :icon="'Search'"
-          @click="SearchClickHandle">
+        <el-button type="primary" size="large" :icon="'Search'" @click="SearchClickHandle">
           查询
         </el-button>
       </div>
@@ -57,24 +44,24 @@ interface PropsType {
 const { formItems } = defineProps<PropsType>()
 console.log(formItems)
 
-const formRef: ReturnType<typeof ref<InstanceType<typeof ElForm>>>
-  = ref<InstanceType<typeof ElForm>>()
+const formRef: ReturnType<typeof ref<InstanceType<typeof ElForm>>> =
+  ref<InstanceType<typeof ElForm>>()
 const searchForm: ReturnType<typeof reactive> = reactive<any>({})
 const emit: ReturnType<typeof defineEmits> = defineEmits(['queryClick', 'resetClick'])
 
-const RefreshClickHandle:<T>() => T | void = <T>(): T | void => {
+const RefreshClickHandle: <T>() => T | void = <T,>(): T | void => {
   if (formRef.value) {
-    formRef.value?.resetFields()  // reset form fields
+    formRef.value?.resetFields() // reset form fields
     emit('resetClick')
   }
 }
 
-const SearchClickHandle:<T>() => T | void = <T>(): T | void => {
+const SearchClickHandle: <T>() => T | void = <T,>(): T | void => {
   emit('queryClick', searchForm)
 }
 
 defineExpose({
-  searchForm
+  searchForm,
 })
 </script>
 

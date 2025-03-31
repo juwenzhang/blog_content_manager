@@ -15,5 +15,5 @@ export {
   MainNavMenu,
   PageContent,
   PageSearch,
-  PageModel
+  PageModel,
 }

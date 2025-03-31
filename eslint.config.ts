@@ -29,6 +29,8 @@ export default defineConfigWithVueTs(
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/no-inferrable-types': 'off',
+      'vue/multi-word-component-names': 'off',
+      'vue/valid-template-root': 'off',
     }
   }
 )

@@ -2,17 +2,17 @@ import { ref } from 'vue'
 import { PageContent } from '@/components'
 
 export interface searchForm {
-  username: string;
-  phone: string;
-  email: string;
-  status: string;
-  date: string;
+  username: string
+  phone: string
+  email: string
+  status: string
+  date: string
 }
 
 export interface usePageContentHookReturnType {
-  contentRef: any;
-  queryClickHandler: <T>(searchForm: Partial<searchForm>) => T | void;
-  resetClickHandler: <T>() => T | void;
+  contentRef: any
+  queryClickHandler: <T>(searchForm: Partial<searchForm>) => T | void
+  resetClickHandler: <T>() => T | void
 }
 
 function usePageContentHook(): usePageContentHookReturnType {
@@ -27,7 +27,7 @@ function usePageContentHook(): usePageContentHookReturnType {
   return {
     contentRef,
     queryClickHandler,
-    resetClickHandler
+    resetClickHandler,
   }
 }
 

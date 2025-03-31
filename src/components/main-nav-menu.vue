@@ -1,10 +1,8 @@
 <template>
   <div class="main-nav-menu">
     <div class="main-env-menu-logo" @click="menuLogoClickHandler">
-      <img src="@/assets/logo.jpg" alt="">
-      <div class="main-nav-menu-title" v-show="!isCollapse">
-        blog-manager
-      </div>
+      <img src="@/assets/logo.jpg" alt="" />
+      <div class="main-nav-menu-title" v-show="!isCollapse">blog-manager</div>
     </div>
 
     <div class="main-nav-menu-menu">
@@ -18,17 +16,13 @@
         <template v-for="(item, index) in Object.keys(homeMenuData)" :key="index">
           <el-sub-menu :index="String(index)">
             <template #title>
-              <el-icon><component :is="componentList[index]"/></el-icon>
+              <el-icon><component :is="componentList[index]" /></el-icon>
               <span>{{ Object.keys(homeMenuData)[index] }}</span>
             </template>
-            <template
-              v-for="(sub_item, sub_index) in homeMenuData[item]"
-              :key="sub_index"
-            >
+            <template v-for="(sub_item, sub_index) in homeMenuData[item]" :key="sub_index">
               <el-menu-item
-                :class="{ 'is-active'
-                  : currentIndex.index === index
-                  && currentIndex.subIndex === sub_index
+                :class="{
+                  'is-active': currentIndex.index === index && currentIndex.subIndex === sub_index,
                 }"
                 @click="subMenuClickHandler(index, sub_index, sub_item.url)"
               >
@@ -46,25 +40,22 @@
 import { ref, computed, type Component, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Monitor, ChatDotRound, Setting, ShoppingBag } from '@element-plus/icons-vue'
-import { useHomeStoreAction } from "@/stores/modules/home.ts"
+import { useHomeStoreAction } from '@/stores/modules/home.ts'
 import { useLoginStoreAction } from '@/stores/modules/login.ts'
 import { localCache } from '@/utils/settleCache.ts'
 
-const componentList:Array<Component> = [Monitor, Setting, ShoppingBag, ChatDotRound]
-const useHomeStore:ReturnType<typeof useHomeStoreAction> = useHomeStoreAction()
-const useLoginStore:ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
-const router:ReturnType<typeof useRouter> = useRouter()
+const componentList: Array<Component> = [Monitor, Setting, ShoppingBag, ChatDotRound]
+const useHomeStore: ReturnType<typeof useHomeStoreAction> = useHomeStoreAction()
+const useLoginStore: ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
+const router: ReturnType<typeof useRouter> = useRouter()
 const { isCollapse } = defineProps({
-  isCollapse: { type: Boolean, default: localCache.getCache('isCollapse') }
+  isCollapse: { type: Boolean, default: localCache.getCache('isCollapse') },
 })
-const defaultActive = computed(() =>
-  `${currentIndex.value.index}-${currentIndex.value.subIndex}`
-)
-const currentIndex = ref<{index:number,subIndex:number}>({index:0, subIndex:0})
-const homeMenuData = useLoginStore.getAccessId === 0
-  ? useHomeStore.getAdminHomeData
-  : useHomeStore.getUserHomeData
-const subMenuClickHandler = (index:number, sub_index:number, url:string) => {
+const defaultActive = computed(() => `${currentIndex.value.index}-${currentIndex.value.subIndex}`)
+const currentIndex = ref<{ index: number; subIndex: number }>({ index: 0, subIndex: 0 })
+const homeMenuData =
+  useLoginStore.getAccessId === 0 ? useHomeStore.getAdminHomeData : useHomeStore.getUserHomeData
+const subMenuClickHandler = (index: number, sub_index: number, url: string) => {
   currentIndex.value = { index, subIndex: sub_index }
   router.push(url)
 }
@@ -105,7 +96,7 @@ onMounted(() => {
 
   .main-nav-menu-menu {
     .el-menu {
-      border-right:none;
+      border-right: none;
       user-select: none;
 
       .el-sub-menu {

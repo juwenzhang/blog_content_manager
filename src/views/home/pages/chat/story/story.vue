@@ -1,11 +1,5 @@
-<template>
+<template></template>
 
-</template>
+<script setup lang="ts" name="story"></script>
 
-<script setup lang="ts" name="story">
-
-</script>
-
-<style scoped lang="less">
-
-</style>
+<style scoped lang="less"></style>

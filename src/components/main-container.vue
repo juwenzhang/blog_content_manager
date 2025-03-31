@@ -1,13 +1,9 @@
 <template>
   <div class="main-container">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
-<script setup lang="ts" name="MainContainer">
+<script setup lang="ts" name="MainContainer"></script>
 
-</script>
-
-<style scoped lang="less">
-
-</style>
+<style scoped lang="less"></style>

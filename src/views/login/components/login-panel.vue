@@ -1,9 +1,7 @@
 <template>
   <div class="login-panel">
     <h1 class="login-panel-title">
-      {{
-        login_message_data.title
-      }}
+      {{ login_message_data.title }}
     </h1>
     <div class="login-panel-tabs">
       <el-tabs type="border-card" stretch v-model="activeName">
@@ -13,35 +11,25 @@
               <UserFilled />
             </el-icon>
             <span>
-              {{
-                login_message_data.tabs.login
-              }}
+              {{ login_message_data.tabs.login }}
             </span>
           </template>
           <template #default>
-            <LoginPanelAccount
-              ref="accountRef"
-            />
+            <LoginPanelAccount ref="accountRef" />
           </template>
         </el-tab-pane>
 
         <el-tab-pane name="phone">
           <template #label>
             <el-icon>
-              <PhoneFilled
-                ref="phoneRef"
-              />
+              <PhoneFilled ref="phoneRef" />
             </el-icon>
             <span>
-              {{
-                login_message_data?.tabs.register
-              }}
+              {{ login_message_data?.tabs.register }}
             </span>
           </template>
           <template #default>
-            <LoginPanelPhone
-              ref="phoneRef"
-            />
+            <LoginPanelPhone ref="phoneRef" />
           </template>
         </el-tab-pane>
       </el-tabs>
@@ -51,13 +39,8 @@
         v-model="isRemPWD"
         :label="login_message_data.control_account.remember_password"
       />
-      <el-link
-        type="primary"
-        href="/"
-      >
-        {{
-          login_message_data.control_account.forget_password
-        }}
+      <el-link type="primary" href="/">
+        {{ login_message_data.control_account.forget_password }}
       </el-link>
     </div>
     <div class="login-panel-action-btn">
@@ -68,9 +51,7 @@
         @click="LoginHandleSelect"
         ref="buttonRef"
       >
-        {{
-          login_message_data.btn_login
-        }}
+        {{ login_message_data.btn_login }}
       </el-button>
     </div>
   </div>
@@ -88,23 +69,27 @@ type LoginPanelAccountInstance = InstanceType<typeof LoginPanelAccount>
 type LoginPanelPhoneInstance = InstanceType<typeof LoginPanelPhone>
 type ElButtonInstance = InstanceType<typeof ElButton>
 
-const useLoginStore:ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
-const isRemPWD:ReturnType<typeof ref<boolean>> = ref<boolean>(useLoginStore.isRemPWD || false)
-const activeName:ReturnType<typeof ref<string>> = ref<string>(useLoginStore.type || 'account')
-const accountRef:ReturnType<typeof ref<LoginPanelAccountInstance | any>> = ref<LoginPanelAccountInstance | any>()
-const phoneRef:ReturnType<typeof ref<LoginPanelPhoneInstance | any>> = ref<LoginPanelPhoneInstance | any>()
-const buttonRef:ReturnType<typeof ref<ElButtonInstance | any>> = ref<ElButtonInstance>()
+const useLoginStore: ReturnType<typeof useLoginStoreAction> = useLoginStoreAction()
+const isRemPWD: ReturnType<typeof ref<boolean>> = ref<boolean>(useLoginStore.isRemPWD || false)
+const activeName: ReturnType<typeof ref<string>> = ref<string>(useLoginStore.type || 'account')
+const accountRef: ReturnType<typeof ref<LoginPanelAccountInstance | any>> = ref<
+  LoginPanelAccountInstance | any
+>()
+const phoneRef: ReturnType<typeof ref<LoginPanelPhoneInstance | any>> = ref<
+  LoginPanelPhoneInstance | any
+>()
+const buttonRef: ReturnType<typeof ref<ElButtonInstance | any>> = ref<ElButtonInstance>()
 
-const LoginHandleSelect:ReturnType<typeof ref<() => void>> = ref<() => void>()
-onMounted(<T>():T | void => {
+const LoginHandleSelect: ReturnType<typeof ref<() => void>> = ref<() => void>()
+onMounted(<T,>(): T | void => {
   LoginHandleSelect.value = () => {
     switch (activeName.value) {
       case 'account':
         accountRef.value.LoginHandleAccountAction(isRemPWD.value)
-        break;
+        break
       case 'phone':
         phoneRef.value.LoginHandlePhoneAction(isRemPWD.value)
-        break;
+        break
     }
   }
 })

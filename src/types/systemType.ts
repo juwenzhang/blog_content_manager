@@ -10,7 +10,7 @@ interface userType {
 }
 
 export interface userListType {
-  list: Partial<userType>[],
+  list: Partial<userType>[]
   total: number
 }
 

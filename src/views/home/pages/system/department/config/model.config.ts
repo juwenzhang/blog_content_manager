@@ -1,7 +1,7 @@
 export const modelConfig = {
   header: {
     addTitle: '新增用户',
-    editTitle: '编辑用户'
+    editTitle: '编辑用户',
   },
   propsList: [
     {
@@ -15,6 +15,6 @@ export const modelConfig = {
       label: '手机号',
       prop: 'phone',
       placeholder: '请输入手机号',
-    }
-  ]
+    },
+  ],
 }

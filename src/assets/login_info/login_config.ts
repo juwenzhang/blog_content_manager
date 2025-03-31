@@ -1,19 +1,19 @@
 interface loginConfigCode {
-    username: string;
-    password: string;
+  username: string
+  password: string
 }
 
 interface LoginConfigPhone {
-    phone: string;
-    code: string;
+  phone: string
+  code: string
 }
 
 export const loginConfigCode: loginConfigCode = {
-    username: 'juwenzhang',
-    password: '451674231jzh123213'
+  username: 'juwenzhang',
+  password: '451674231jzh123213',
 }
 
 export const loginConfigPhone: LoginConfigPhone = {
-    phone: '17323451211',
-    code: ''
+  phone: '17323451211',
+  code: '',
 }
